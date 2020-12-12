@@ -47,6 +47,10 @@ def topicos(request):
         ).distinct
     return render(request, 'content/topicos.html', {'topicos': topicos, 'data': dataSerialize})
 
+def infografia(request, id_topico):
+    topico = Topico.objects.get(id = id_topico)
+    return render(request, 'content/infografia.html', {'topico': topico})
+
 #def subtopicos(request, id_topico):
     # Todos los subtopicos asociados a id_topico
     #subtopicos = Subtopico.objects.filter(topico__id = id_topico)

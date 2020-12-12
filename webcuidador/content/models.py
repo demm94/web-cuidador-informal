@@ -9,6 +9,7 @@ class Topico(models.Model):
     creado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Creado_por')
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
     imagen = models.ImageField(verbose_name='Imagen', upload_to="topicos")
+    url_infografia = models.URLField(null=True,verbose_name="URL Infografía")
     fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creación')
 
     class Meta:

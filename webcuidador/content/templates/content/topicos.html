@@ -37,7 +37,11 @@
                         <div class="card-body">
                             <h5 class="card-title">{{topico.nombre}}</h5>
                             <!--<p class="card-text">{{seccion.descripcion}}</p>-->
-                            <a href="{% url 'top_controlador' topico.id %}" class="stretched-link"></a>
+                            {% if topico.url_infografia %}
+                                <a href="{% url 'infografia' topico.id %}" class="stretched-link"></a>
+                            {% else %}
+                                <a href="{% url 'top_controlador' topico.id %}" class="stretched-link"></a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ from.models import Topico, Subtopico, Tema, DetalleTema
 class TopicoAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'creado_por', 'fecha_creacion')
     fieldsets = (
-        (None, { 'fields': ['nombre', 'imagen'] } ),
+        (None, { 'fields': ['nombre', 'imagen', 'url_infografia'] } ),
     )
 
     def save_model(self, request, obj, form, change):
