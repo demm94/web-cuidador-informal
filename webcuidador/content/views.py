@@ -36,6 +36,7 @@ def subtopicos(request, id_topico):
     print(subtopicos)
     return render(request, 'content/subtopicos.html', {'subtopicos': subtopicos})'''
 
+@login_required
 def topicos(request):
     busqueda = request.GET.get("buscar")
     topicos = Topico.objects.all()
@@ -47,6 +48,7 @@ def topicos(request):
         ).distinct
     return render(request, 'content/topicos.html', {'topicos': topicos, 'data': dataSerialize})
 
+@login_required
 def infografia(request, id_topico):
     topico = Topico.objects.get(id = id_topico)
     return render(request, 'content/infografia.html', {'topico': topico})
