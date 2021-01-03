@@ -3,16 +3,6 @@ from django.contrib import admin
 from.models import Topico, Subtopico, Tema, DetalleTema
 
 # Register your models here.
-"""class SeccionAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'creado_por', 'descripcion', 'fecha_creacion')
-    fieldsets = (
-        (None, { 'fields': ('nombre','descripcion', 'topicos') } ),
-    )
-
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'creado_por', None) is None:
-            obj.creado_por = request.user
-        obj.save()"""
 
 class TopicoAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'creado_por', 'fecha_creacion')

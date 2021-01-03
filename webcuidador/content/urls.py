@@ -8,7 +8,10 @@ urlpatterns = [
     path('consejos/', views.consejos, name='consejos'),
     #path('secciones/topicos/<int:id_seccion>/', views.topicos, name='topicos'),
     #path('secciones/subtopicos/<int:id_topico>/', views.subtopicos, name='subtopicos'),
-    path('controlador1/<int:id_topico>/', views.top_controlador, name='top_controlador'),
-    path('controlador2/<int:id_subtopico>/', views.subtop_controlador, name='subtop_controlador'),
-    path('controlador3/<int:id_tema>/', views.tema_controlador, name='tema_controlador'),
+    path('consejos/contr1/<int:id_topico>/', views.top_controlador, name='top_controlador'),
+    path('consejos/contr2/<int:id_subtopico>/', views.subtop_controlador, name='subtop_controlador'),
+    path('consejos/contr3/<int:id_tema>/', views.tema_controlador, name='tema_controlador'),
+    path('tests/<int:id_usuario>/', views.test_cuidador, name='test_cuidador'),
+    path('tests/npi/<int:id_npi>/', views.ver_npi, name='ver_npi'),
+    path('tests/zarit/<int:id_zarit>/', views.ver_zarit, name='ver_zarit'),
 ]

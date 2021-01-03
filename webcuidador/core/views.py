@@ -8,9 +8,3 @@ def portada(request):
         return redirect(reverse_lazy('home'))
     return render(request, 'core/portada.html')
 
-def inicio(request):
-    return render(request, 'core/inicio.html')
-
-def prueba(request):
-    return render(request, 'core/prueba.html')
-

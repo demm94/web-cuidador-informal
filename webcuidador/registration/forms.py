@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 class SignUpForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'is_cuidador', 'is_medico', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'is_cuidador', 'is_medico', 'password1', 'password2')
 
     #  Validación formulario de registro de usuario
     def clean(self):

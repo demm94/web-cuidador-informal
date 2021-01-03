@@ -1,0 +1,148 @@
+{% extends "core/base.html" %}
+
+{% block title %}Test NPI{% endblock %}
+{% block content %}
+<h2 align="center">Formulario ZARIT</h2>
+<p align="justify">El test de Zarit valora el grado de sobrecarga del cuidador y orientará al personal de salud a realizar
+intervenciones oportunas.</p>
+
+<style>
+    table {
+  /* override Bootstrap's width */
+  width: inherit !important;
+}
+tr {}
+td, th {
+  width: auto;
+}
+td.min, th.min {
+  width: 1% !important;
+  white-space: nowrap !important;
+}
+
+</style>
+
+<div class="row">
+    <div class="col-md-12 mx-auto">
+        <form action="#">
+            {% csrf_token %}
+        <div class="table-responsive">
+            <table id="tabla_preguntas" class="table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th scope="col">Pregunta</th>
+                        <th class="min">Frecuencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                        <tr>
+                            <td><strong>1.</strong> ¿Piensa que su familiar pide más ayuda de la que realmente necesita?</td>
+                            <td class="min"><label for="{{ form.r1.id_for_label }}"></label>{{ form.r1 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>2.</strong> ¿Piensa que debido al tiempo que dedica a su familiar no tiene
+                                suficiente tiempo para usted?</td>
+                            <td><label for="{{ form.r2.id_for_label }}"></label>{{ form.r2 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3.</strong> ¿Se siente agobiado por intentar compatibilizar el cuidado de su
+                                familiar con otras responsabilidades (trabajo, familia)?</td>
+                            <td><label for="{{ form.r3.id_for_label }}"></label>{{ form.r3 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>4.</strong> ¿Siente vergüenza por la conducta de su familiar?</td>
+                            <td><label for="{{ form.r4.id_for_label }}"></label>{{ form.r4 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5.</strong> ¿Se siente enfadado cuando está cerca de su familiar?</td>
+                            <td><label for="{{ form.r5.id_for_label }}"></label>{{ form.r5 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>6.</strong> ¿Piensa que el cuidar de su familiar afecta negativamente la
+                                relación que Ud. tiene con otros miembros de su familia?</td>
+                            <td><label for="{{ form.r6.id_for_label }}"></label>{{ form.r6 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>7.</strong> ¿Tiene miedo por el futuro de su familia?</td>
+                            <td><label for="{{ form.r7.id_for_label }}"></label>{{ form.r7 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>8.</strong> ¿Piensa que su familiar depende de usted?</td>
+                            <td><label for="{{ form.r8.id_for_label }}"></label>{{ form.r8 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>9.</strong> ¿Piensa que su salud ha empeorado debido a tener que cuidar
+                                a su familiar?</td>
+                            <td><label for="{{ form.r9.id_for_label }}"></label>{{ form.r9 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>10.</strong> ¿Se siente tenso cuando está cerca de su familiar?</td>
+                            <td><label for="{{ form.r10.id_for_label }}"></label>{{ form.r10 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>11.</strong> ¿Piensa que no tiene tanta intimidad como le gustaría debido a
+                                tener que cuidar de su familia?</td>
+                            <td><label for="{{ form.r11.id_for_label }}"></label>{{ form.r11 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>12.</strong> ¿Siente que su vida social se ha visto afectada negativamente por
+                                tener que cuidar de su familiar?</td>
+                            <td><label for="{{ form.r12.id_for_label }}"></label>{{ form.r12 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>13.</strong> ¿Se siente incómodo por distanciarse de sus amistades debido a
+                                tener que cuidar de su familiar?</td>
+                            <td><label for="{{ form.r13.id_for_label }}"></label>{{ form.r13 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>14.</strong> ¿Piensa que su familiar le considera a usted la única persona que
+                                le puede cuidar?</td>
+                            <td><label for="{{ form.r14.id_for_label }}"></label>{{ form.r14 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>15.</strong> ¿Piensa que no tiene suficientes ingresos económicos para los
+                                gastos de cuidar a su familiar, además de sus otros gastos?</td>
+                            <td><label for="{{ form.r15.id_for_label }}"></label>{{ form.r15 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>16.</strong> ¿Piensa que no será capaz de cuidar a su familiar por mucho
+                                más tiempo?</td>
+                            <td><label for="{{ form.r16.id_for_label }}"></label>{{ form.r16 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>17.</strong> ¿Siente que ha perdido el control de su vida desde que comenzó
+                                la enfermedad de su familiar?</td>
+                            <td><label for="{{ form.r17.id_for_label }}"></label>{{ form.r17 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>18.</strong> ¿Desearía poder dejar el cuidado de su familiar a otra persona?</td>
+                            <td><label for="{{ form.r18.id_for_label }}"></label>{{ form.r18 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>19.</strong> ¿Se siente indeciso sobre qué hacer con su familiar?</td>
+                            <td><label for="{{ form.r19.id_for_label }}"></label>{{ form.r19 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>20.</strong> ¿Piensa que debería hacer más por su familiar?</td>
+                            <td><label for="{{ form.r20.id_for_label }}"></label>{{ form.r20 }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>21.</strong> ¿Piensa que podría cuidar mejor a su familiar?</td>
+                            <td><label for="{{ form.r21.id_for_label }}"></label>{{ form.r21 }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>22.</strong> Globalmente ¿Qué grado de “carga” experimenta por el hecho de
+                                cuidar a su familiar?</td>
+                            <td><label for="{{ form.r22.id_for_label }}"></label>{{ form.r22 }}</td>
+                        </tr>
+                </tbody>
+            </table>    
+        </div>
+        </form>
+    </div>
+</div>
+<script>
+    $('input[type=radio]').prop('disabled', true);
+</script>
+{% endblock  %}

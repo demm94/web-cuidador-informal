@@ -1,0 +1,142 @@
+{% extends "core/base.html" %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+    <style>
+    @media only screen and (max-width: 600px) {
+        #titulo-medico {
+            font-size: 1.5rem;
+            text-align: center;
+            padding-bottom: 0.8rem;
+        }
+    }
+    </style>
+    {% if user.is_medico %}
+        <h2 id="titulo-medico">Bienvenido(a)
+             <small class="text-muted">{{user.first_name}} {{user.last_name}}!</small>
+        </h2>
+        <blockquote class="blockquote">
+            <p class="mb-0" style="font-size: 1rem;">A continuación puedes ver la lista de todos los cuidadores de la plataforma.</p>
+          </blockquote>
+            <table id="tablaCuidadoresMedico" class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Nombre Cuidador</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">Estado civil</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Relación paciente</th>
+                    <th scope="col">Inicio cuidados</th>
+                    <th scope="col">Tests</th>
+                    <!--<th scope="col">Síntomas</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                {% for cuidador in cuidadores %}  
+                    <tr>
+                        <th scope="row">{{cuidador.user.first_name}} {{cuidador.user.last_name}}</th>
+                        <td>{{cuidador.edad}} años</td>
+                        <td>{{cuidador.estado_civil}}(a)</td>
+                        <td><span class="badge badge-info">{{cuidador.tipo}}</span></td>
+                        <td>{{cuidador.relacion_paciente}}(a)</td>
+                        <td>{{cuidador.fecha_cuidado}}</td>
+                        <td><a href="{% url 'test_cuidador' cuidador.user.id %}" class="btn btn-info btn-sm">
+                            <i class="fa fa-info-circle mr-1" aria-hidden="true"></i>Detalles</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+          <script>
+              $(document).ready(function(){
+                $('#tablaCuidadoresMedico').DataTable({
+                    "responsive": true,
+                    "bAutoWidth": false,
+                    "aLengthMenu": [[5,10, 25, 50, 100, -1], [5,10, 25, 50, 100, "Todos"]],
+                    "iDisplayLength": 5,
+                    "language": {   // Cambiode lenguaje a español
+                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                        "sLengthMenu": "Mostrar _MENU_  registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sSearch": "Buscar:",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                });
+              });
+          </script>
+    {% else %}
+        {% if 'profile_error' in request.GET %}
+        <div class="alert alert-warning" role="alert">
+            Para realizar un test, primero debes completar tu perfil en la sección <a href="{% url 'info_cuidador' %}">Cuidador</a>!
+        </div>
+        {% endif %}
+        <style>
+
+        </style>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img class="card-img-top" src="https://www.psicoajuda.pt/wp-content/uploads/2019/04/0197-Cuidador-Informal_opt.jpg" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title">Educación para el cuidador</h5>
+                      <p class="card-text">Aquí encontrarás diferentes tópicos relacionados a temas de educación para el cuidador</p>
+                      <a href="{% url 'topicos' %}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <img class="card-img-top" src="https://i.pinimg.com/originals/81/d2/8b/81d28b5217bc952fd18999e59a31f1cf.jpg" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title">Consejos sobre el cuidado</h5>
+                      <p class="card-text">Aquí encontrarás consejos sobre disitintos temas para el cuidado del adulto mayor.</p>
+                      <a href="{% url 'consejos' %}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <style>
+                .test-choice a {
+                opacity: 0; 
+                cursor: pointer;
+                }
+                .test-choice a:hover {
+                    opacity: 1;
+                }
+                .centered {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 1.7rem;
+                    font-weight: bolder;
+                    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                }
+            </style>
+            <div class="col-md-4 test-choice">
+                <div style="background-color:rgb(219, 224, 230)" class="card mb-1">
+                    <a href="{% url 'test_npi' %}" class="stretched-link">
+                        <img src="https://static2.abc.es/media/201101/26/inteligencia1--644x362.jpg" class="card-img-top" alt="...">
+                    </a>
+                    <div  class="centered">TEST NPI-Q</div>
+                </div>
+                <div style="background-color: rgb(245, 231, 205);" class="card mb">
+                    <a href="{% url 'test_zarit' %}" class="stretched-link">
+                        <img src="https://static2.abc.es/media/201101/26/inteligencia1--644x362.jpg" class="card-img-top" alt="...">
+                    </a>
+                    <div class="centered">TEST ZARIT</div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock  %}

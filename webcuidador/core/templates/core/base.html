@@ -8,31 +8,41 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <title>{% block title %}{% endblock%}</title>
 </head>
 <body>
 
+<style>
+  .second-nav{
+    top: 56px;
+}
+</style>
+
 <!-- Barra de navegación -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" {% if request.user.is_authenticated %}href="{% url 'home'%}"{% else %}href="{% url 'portada'%}"{% endif %}>YoTeCuido</a>
+
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" {% if request.user.is_authenticated %}href="{% url 'home'%}"{% else %}href="{% url 'portada'%}"{% endif %}><i class="fa fa-heartbeat mr-1" aria-hidden="true"></i>YoTeCuido</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     {% if request.user.is_authenticated %}
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item {% if request.path == '/content/' %}active{% endif %}">
+        <li class="nav-item {% if '/content/' in request.path and '/consejos/' not in request.path %}active{% endif %}">
           <a class="nav-link" href="{% url 'home' %}">Inicio <span class="sr-only">(current)</span></a>
         </li>
         {% if not request.user.is_staff and request.user.is_cuidador %}
-        <li class="nav-item {% if request.path == '/patient/info/' %}active{% endif %}" >
-          <a class="nav-link" href="{% url 'info_paciente' %}">Mi Paciente</a>
+        <li class="nav-item {% if '/patient/' in request.path  %}active{% endif %}" >
+          <a class="nav-link" href="{% url 'info_cuidador' %}">Cuidador</a>
         </li>
-        <li class="nav-item {% if request.path == '/content/consejos/' %}active{% endif %}">
+        <li class="nav-item {% if '/consejos/' in request.path %}active{% endif %}">
           <a class="nav-link" href="{% url 'consejos' %}">Consejos</a>
         </li>
-        {% elif request.user.is_staff %}
+        {% elif request.user.is_staff or request.user.is_gestionador %}
         <li class="nav-item {% if request.path == '/admin/' %}active{% endif %}">
           <a class="nav-link" href="/admin/">Administrar</a>
         </li>
@@ -41,11 +51,17 @@
         </li>
         {% endif %}
       </ul>
-      <a class="nav-link disabled pl-0" href="#" tabindex="-1" aria-disabled="true">{{user.get_username}}</a>
-      <a href="{% url 'logout' %}" class="btn btn-outline-danger" tabindex="-1" role="button" aria-disabled="true">Cerrar Sesión</a>
+      <a class="nav-link disabled pl-0" href="#" tabindex="-1" aria-disabled="true"><i class="fa fa-user mr-2 mb-2" aria-hidden="true"></i>{{user.get_username}}</a>
+      <a href="{% url 'logout' %}" class="btn btn-outline-danger" tabindex="-1" role="button" aria-disabled="true"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Cerrar Sesión</a>
     {% endif %}
   </div>
 </nav>
+{% if request.user.is_authenticated and request.path != '/content/' %}
+  <nav style="z-index: 1" class="navbar sticky-top navbar-light bg-light second-nav">
+        <!--<a href="{{ request.META.HTTP_REFERER }}" class="navbar-brand"><i class="fa fa-chevron-left mr-2" aria-hidden="true"></i>Atrás</a>-->
+        <a href="" onClick="window.history.back();return false;" class="navbar-brand"><i class="fa fa-chevron-left mr-2" aria-hidden="true"></i>Atrás</a>
+  </nav>
+{% endif %}
 
 <!--Contenido-->
 <div class="container p-3">
@@ -56,12 +72,19 @@
 {% if request.path != "/accounts/login/" %}<hr>{% endif %}
 
 <!-- Pie de Página -->
+<!-- Popover -->
+<script>
+  $(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
 
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 <!-- DataTables JS -->
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
 
 </body>
 </html>

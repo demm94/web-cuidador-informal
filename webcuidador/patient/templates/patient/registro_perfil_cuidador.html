@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block title %}Registrar Cuidador{% endblock %}
+{% block content %}
+<h2 align="center">Ingrese datos para su perfil de cuidador</h2>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <form action="{% url 'registrar_perfil_cuidador' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <!--<input type="submit" value="Submit">-->
+            <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+        </form>
+    </div>
+</div>
+{% endblock  %}

@@ -8,7 +8,7 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
     </div>-->
-    <form class="my-2 my-lg-0" method="GET">
+    <form class=" my-lg-0" method="GET">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar" name="buscar" value="{{request.GET.buscar}}">
             <div class="input-group-append">
@@ -38,10 +38,10 @@
                             <h5 class="card-title">{{topico.nombre}}</h5>
                             <!--<p class="card-text">{{seccion.descripcion}}</p>-->
                             {% if topico.url_infografia %}
-                                <a href="{% url 'infografia' topico.id %}" class="stretched-link"></a>
-                            {% else %}
-                                <a href="{% url 'top_controlador' topico.id %}" class="stretched-link"></a>
+                                <!--<a href="{% url 'infografia' topico.id %}" class="stretched-link"></a>-->
+                                <a style="z-index: 2;position: relative;" href="{% url 'infografia' topico.id %}">Ver infografía (opcional)</a>
                             {% endif %}
+                                <a href="{% url 'top_controlador' topico.id %}" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
