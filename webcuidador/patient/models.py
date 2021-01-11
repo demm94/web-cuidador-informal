@@ -111,6 +111,7 @@ class RespuestaNPI(models.Model):
     class Meta:
         verbose_name = 'Respuesta NPI'
         verbose_name_plural = 'Respuestas NPI'
+        ordering = ['-id']
 
 class RespuestaZarit(models.Model):
     test = models.OneToOneField(Test, on_delete=models.CASCADE, null=False, blank=False)
@@ -142,3 +143,4 @@ class RespuestaZarit(models.Model):
     class Meta:
         verbose_name = 'Respuesta Zarit'
         verbose_name_plural = 'Respuestas Zarit'
+        ordering = ['-id']

@@ -20,8 +20,15 @@ def check_medico(request):
 
 @login_required
 def home(request):
+    busqueda = request.GET.get("buscar")
     cuidadores = Cuidador.objects.all()
-    return render(request, 'content/home.html', {'cuidadores': cuidadores})
+    temas = None
+    if busqueda:
+        print("Holaa jeje")
+        temas = Tema.objects.filter(
+            Q(nombre__icontains = busqueda)
+        ).distinct
+    return render(request, 'content/home.html', {'cuidadores': cuidadores, 'temas': temas})
 
 @login_required
 def topicos(request):

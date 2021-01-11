@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--Google Font-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <title>{% block title %}{% endblock%}</title>
 </head>
@@ -25,7 +28,7 @@
 <!-- Barra de navegación -->
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" {% if request.user.is_authenticated %}href="{% url 'home'%}"{% else %}href="{% url 'portada'%}"{% endif %}><i class="fa fa-heartbeat mr-1" aria-hidden="true"></i>YoTeCuido</a>
+  <a style="font-family: 'Teko', sans-serif;font-size: 22px;" class="navbar-brand" {% if request.user.is_authenticated %}href="{% url 'home'%}"{% else %}href="{% url 'portada'%}"{% endif %}><i class="fa fa-heartbeat mr-1" aria-hidden="true"></i>CareForMe</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

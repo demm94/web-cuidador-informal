@@ -34,7 +34,13 @@
                     <tr>
                         <th scope="row">{{forloop.counter}}</th>
                         <td>{{z.test.fecha}}</td>
-                        <td><span class="badge badge-secondary">{{z.resultado}} puntos</span></td>
+                        {% if z.resultado <= 46 %}
+                            <td><span class="badge badge-success">{{z.resultado}} puntos</span></td>
+                        {% elif z.resultado <= 55 and z.resultado >= 47 %}
+                            <td><span class="badge badge-warning">{{z.resultado}} puntos</span></td>
+                        {% else %}
+                            <td><span class="badge badge-danger">{{z.resultado}} puntos</span></td>
+                        {% endif %}
                         <td>{{z.evaluacion}}</td>
                         <td><a href="{% url 'ver_zarit' z.id %}" class="btn btn-info btn-sm">
                             <i class="fa fa-eye mr-1" aria-hidden="true"></i>Ver</a></td>
