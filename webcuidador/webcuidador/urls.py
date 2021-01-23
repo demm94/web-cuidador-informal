@@ -29,6 +29,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #Paths auth
     path('accounts/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'), #Redirecciona a usuarios autentificados
+    path('accounts/change-password/', auth_views.PasswordChangeView.as_view(), name='change-password'),
+    path('accounts/change-password-done/', auth_views.PasswordChangeDoneView.as_view()),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('registration.urls')),
 ]

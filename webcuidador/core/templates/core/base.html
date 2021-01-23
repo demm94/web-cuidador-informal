@@ -42,7 +42,7 @@
           <a class="nav-link" href="{% url 'home' %}">Inicio <span class="sr-only">(current)</span></a>
         </li>
         {% if not request.user.is_staff and request.user.is_cuidador %}
-        <li class="nav-item {% if '/patient/' in request.path  %}active{% endif %}" >
+        <li class="nav-item {% if '/patient/' in request.path %}active{% endif %}" >
           <a class="nav-link" href="{% url 'info_cuidador' %}">Cuidador</a>
         </li>
         <li class="nav-item {% if '/consejos/' in request.path %}active{% endif %}">
@@ -54,6 +54,10 @@
         </li>
         <li class="nav-item {% if request.path == '/content/consejos/' %}active{% endif %}">
           <a class="nav-link" href="{% url 'consejos' %}">Consejos</a>
+        </li>
+        {% elif request.user.is_medico %}
+        <li class="nav-item {% if 'change-password' in request.path %}active{% endif %}">
+          <a class="nav-link" href="{% url 'change-password' %}">Cambiar contraseña</a>
         </li>
         {% endif %}
       </ul>
