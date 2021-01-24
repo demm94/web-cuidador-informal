@@ -2,7 +2,17 @@
 
 {% block title %}Test NPI{% endblock %}
 {% block content %}
+<style>
+    @media only screen and (max-width: 600px) {
+        .datos-test {
+            font-size: 1.1rem;
+        }
+    }
+</style>
 <h2 align="center">Test NPI-Q</h2>
+<p class="lead datos-test mb-1"><strong>Cuidador:</strong> {{form_instance.test.cuidador.first_name}} {{form_instance.test.cuidador.last_name}}</p>
+<p class="lead datos-test"><strong>Fecha:</strong> {{form_instance.test.fecha}}</p>
+<hr>
 <p align="justify">El cuestionario neuropsiquíatrico (NPI) sólo deberá aplicarlo si es responsable de un paciente
 con demencia. Ayudará al médico a valorar qué trastornos presenta el adulto mayor y la severidad de estos.</p>
 

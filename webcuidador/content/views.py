@@ -100,7 +100,7 @@ def test_cuidador(request, id_usuario):
 def ver_npi(request, id_npi):
     form_instance = RespuestaNPI.objects.get(id=id_npi)
     form = TestNPIForm(instance=form_instance)
-    return render(request, 'content/testNPI.html', {'form': form})
+    return render(request, 'content/testNPI.html', {'form': form, 'form_instance': form_instance})
 
 
 @login_required
@@ -108,5 +108,5 @@ def ver_npi(request, id_npi):
 def ver_zarit(request, id_zarit):
     form_instance = RespuestaZarit.objects.get(id=id_zarit)
     form = TestZaritForm(instance=form_instance)
-    return render(request, 'content/testZarit.html', {'form': form})
+    return render(request, 'content/testZarit.html', {'form': form, 'form_instance': form_instance})
 

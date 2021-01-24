@@ -1,9 +1,27 @@
 {% extends "core/base.html" %}
 
-{% block title %}Test NPI{% endblock %}
+{% block title %}Test Zarit{% endblock %}
 {% block content %}
-<h2 align="center">Formulario ZARIT</h2>
-<p align="justify">El test de Zarit valora el grado de sobrecarga del cuidador y orientará al personal de salud a realizar
+<style>
+    @media only screen and (max-width: 600px) {
+        .datos-test {
+            font-size: 1.1rem;
+        }
+    }
+</style>
+<h2 align="center">Test ZARIT</h2>
+<p class="lead datos-test mb-1"><strong>Cuidador:</strong> {{form_instance.test.cuidador.first_name}} {{form_instance.test.cuidador.last_name}}</p>
+<p class="lead datos-test mb-1"><strong>Fecha:</strong> {{form_instance.test.fecha}}</p>
+<p class="lead datos-test mb-1"><strong>Resultado:</strong> {{form_instance.resultado}} puntos</p>
+{% if form_instance.resultado <= 46 %}
+    <p class="lead datos-test mb-1"><strong>Evaluación:</strong> <span class="badge badge-success">{{form_instance.evaluacion}}</span></p>
+{% elif form_instance.resultado <= 55 and form_instance.resultado >= 47 %}
+<p class="lead datos-test mb-1"><strong>Evaluación:</strong> <span class="badge badge-warning">{{form_instance.evaluacion}}</span></p>
+{% else %}
+<p class="lead datos-test mb-1"><strong>Evaluación:</strong> <span class="badge badge-danger">{{form_instance.evaluacion}}</span></p>
+{% endif %}
+<hr>
+<p  align="justify">El test de Zarit valora el grado de sobrecarga del cuidador y orientará al personal de salud a realizar
 intervenciones oportunas.</p>
 
 <style>
