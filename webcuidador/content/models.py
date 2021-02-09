@@ -56,6 +56,7 @@ class Tema(models.Model):
     topico = models.ForeignKey(Topico, on_delete=models.CASCADE, verbose_name='Tópico')
     nombre = models.CharField(max_length=100, verbose_name='Nombre')
     imagen = models.ImageField(verbose_name='Imagen', null=True, upload_to="temas")
+    url_infografia = models.URLField(null=True,verbose_name="URL Infografía")
     fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creación')
 
     class Meta:

@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('topicos/', views.topicos, name='topicos'),
     path('topicos/<int:id_topico>/infografia/', views.infografia, name='infografia'),
+    path('consejos/<int:id_tema>/infografia/', views.infografia_consejos, name='infografia_consejos'),
     path('consejos/', views.consejos, name='consejos'),
     #path('secciones/topicos/<int:id_seccion>/', views.topicos, name='topicos'),
     #path('secciones/subtopicos/<int:id_topico>/', views.subtopicos, name='subtopicos'),

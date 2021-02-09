@@ -48,6 +48,11 @@ def infografia(request, id_topico):
     return render(request, 'content/infografia.html', {'topico': topico})
 
 @login_required
+def infografia_consejos(request, id_tema):
+    tema = Tema.objects.get(id = id_tema)
+    return render(request, 'content/infografia.html', {'tema': tema})
+
+@login_required
 def top_controlador(request, id_topico):
     nombreTopico = Topico.objects.get(id = id_topico) # Link anterior
     subtopicos = Subtopico.objects.filter(topico__id = id_topico)
@@ -94,14 +99,12 @@ def test_cuidador(request, id_usuario):
     npi = RespuestaNPI.objects.filter(test__cuidador__id = id_usuario)
     return render(request, 'content/tests.html', {'zarit': zarit, 'npi': npi, 'cuidador': cuidador})
 
-
 @login_required
 @user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
 def ver_npi(request, id_npi):
     form_instance = RespuestaNPI.objects.get(id=id_npi)
     form = TestNPIForm(instance=form_instance)
     return render(request, 'content/testNPI.html', {'form': form, 'form_instance': form_instance})
-
 
 @login_required
 @user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 

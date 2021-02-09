@@ -29,7 +29,7 @@ class SubTopicoAdmin(admin.ModelAdmin):
 class TemaAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'subtopico', 'topico', 'creado_por', 'fecha_creacion')
     fieldsets = (
-        (None, { 'fields': ('nombre', 'subtopico', 'topico', 'imagen') } ),
+        (None, { 'fields': ('nombre', 'subtopico', 'topico', 'url_infografia', 'imagen') } ),
     )
 
     def save_model(self, request, obj, form, change):

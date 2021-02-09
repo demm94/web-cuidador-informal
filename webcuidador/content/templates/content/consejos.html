@@ -1,20 +1,18 @@
-{% extends "core/base.html" %}
-
-{% block title %}Consejos{% endblock %}
-{% block content %}
-    <h2>Consejos al cuidador</h2>
-    <div class="row">
-        {% for tema in temas %}
-            <div class="col-sm-4">
-                <div class="card mb-3">
-                    <img class="card-img-top" height="210" src="{% if tema.imagen %}{{tema.imagen.url}}{% endif %}" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">{{tema.nombre}}</h5>
-                    <!--<p class="card-text">{{seccion.descripcion}}</p>-->
-                    <a href="{% url 'tema_controlador' tema.id %}" class="stretched-link"></a>
-                </div>
-                </div>
+{% extends "core/base.html" %} {% block title %}Consejos{% endblock %} {% block content %}
+<h2>Consejos al cuidador</h2>
+<div class="row">
+    {% for tema in temas %}
+    <div class="col-sm-4">
+        <div class="card mb-3">
+            <img class="card-img-top" height="210" src="{% if tema.imagen %}{{tema.imagen.url}}{% endif %}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{tema.nombre}}</h5>
+                <!--<p class="card-text">{{seccion.descripcion}}</p>-->
+                {% if tema.url_infografia %}<a style="z-index: 2;position: relative;" href="{% url 'infografia_consejos' tema.id %}">Ver infografía (opcional)</a> {% endif %}
+                <a href="{% url 'tema_controlador' tema.id %}" class="stretched-link"></a>
             </div>
-        {% endfor %}
+        </div>
     </div>
-{% endblock  %}
+    {% endfor %}
+</div>
+{% endblock %}
