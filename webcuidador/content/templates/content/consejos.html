@@ -2,7 +2,7 @@
 <h2>Consejos al cuidador</h2>
 <div class="row">
     {% for tema in temas %}
-    <div class="col-sm-4">
+    <div class="col-12 col-sm-6 col-lg-4">
         <div class="card mb-3">
             <img class="card-img-top" height="210" src="{% if tema.imagen %}{{tema.imagen.url}}{% endif %}" alt="Card image cap">
             <div class="card-body">

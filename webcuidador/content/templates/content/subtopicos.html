@@ -1,14 +1,11 @@
-{% extends "core/base.html" %}
-
-{% block title %}Subtópicos{% endblock %}
-{% block content %}
-    <!--<div class="mb-2">
+{% extends "core/base.html" %} {% block title %}Subtópicos{% endblock %} {% block content %}
+<!--<div class="mb-2">
         <form class="form-inline my-2 my-lg-0"> 
             <input class="form-control mr-sm-2" type="search" placeholder="Buscar..." aria-label="Search" name="buscar" value="{{request.GET.buscar}}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
         </form>
     </div>-->
-    <!--<form class="my-2 my-lg-0" method="GET">
+<!--<form class="my-2 my-lg-0" method="GET">
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar" name="buscar" value="{{request.GET.buscar}}">
             <div class="input-group-append">
@@ -16,19 +13,19 @@
             </div>
         </div>
     </form>-->
-    <h2>{{nombreAnterior.nombre}}</h2>
-    <div class="row">
-        {% for subtopico in subtopicos %}
-            <div class="col-sm-4">
-                <div class="card mb-3">
-                    <img class="card-img-top" height="210" src="{% if subtopico.imagen %}{{subtopico.imagen.url}}{% endif %}" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">{{subtopico.nombre}}</h5>
-                    <!--<p class="card-text">{{seccion.descripcion}}</p>-->
-                    <a href="{% url 'subtop_controlador' subtopico.id %}" class="stretched-link"></a>
-                </div>
-                </div>
+<h2>{{nombreAnterior.nombre}}</h2>
+<div class="row">
+    {% for subtopico in subtopicos %}
+    <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card mb-3">
+            <img class="card-img-top" height="210" src="{% if subtopico.imagen %}{{subtopico.imagen.url}}{% endif %}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{subtopico.nombre}}</h5>
+                <!--<p class="card-text">{{seccion.descripcion}}</p>-->
+                <a href="{% url 'subtop_controlador' subtopico.id %}" class="stretched-link"></a>
             </div>
-        {% endfor %}
+        </div>
     </div>
-{% endblock  %}
+    {% endfor %}
+</div>
+{% endblock %}
