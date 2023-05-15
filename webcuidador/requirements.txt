@@ -1,0 +1,10 @@
+asgiref==3.6.0
+Django==4.1
+django-ckeditor==6.0.0
+django-js-asset==2.0.0
+django-paginator==0.2a3
+Pillow==9.5.0
+python-decouple==3.8
+pytz==2023.3
+sqlparse==0.4.4
+whitenoise==6.4.0
