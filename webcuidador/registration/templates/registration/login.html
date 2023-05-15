@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Iniciar sesión{% endblock %}
 {% block content %}
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 <style>.errorlist{color:red;}</style>
 <main role="main">
   <div class="container">
@@ -13,24 +14,45 @@
                 Usuario registrado correctamente, ya puedes acceder.
             </div>
         {% endif %}
-        <form action="" method="post">{% csrf_token %}
-          <h3 align="center" class="mb-4"><i class="fa fa-user-circle mr-2" aria-hidden="true"></i>Iniciar sesión</h3>
-          {% if form.non_field_errors %}
-            <p style="color:red">Usuario o contraseña incorrectos, prueba de nuevo.</p>
-          {% endif %}
-          <p>
-            <input type="text" name="username" autofocus maxlength="254" required
-              id="id_username" class="form-control" placeholder="Nombre de usuario"/>
-          </p>
-          <p>
-            <input type="password" name="password" required
-              id="id_password" class="form-control" placeholder="Contraseña"/>
-          </p>
-          <p><button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in mr-1" aria-hidden="true"></i>Entrar</button></p>
-          <p align="center">¿No tienes una cuenta? <a href="{% url 'signup' %}"><span style="color:#0095f6">Regístrate</span></a></p>
-        </form>
+        <div class="container p-5 d-flex flex-column justify-content-center vh-70 ">
+          <form action="" method="post">{% csrf_token %}
+            <h2 align="center" class="mb-4"><i class="fa fa-user-circle mr-2" aria-hidden="true"></i><br>Iniciar sesión</h2>
+            <p class="text-center">Ingrese sus credenciales para acceder a CareForMe</p>
+            {% if form.non_field_errors %}
+            <p class="text-center" style="color:red">Usuario o contraseña incorrectos, prueba de nuevo.</p>
+            {% endif %}
+            <div class="form-container">
+            
+             
+              <div class="form-group">
+                <label for="InputEmail1" style="color:white">Nombre de usuario:</label>
+                <input type="text" name="username" autofocus maxlength="254" required
+                  id="id_username" class="form-control"/>
+                
+              </div>
+              <div class="form-group">
+                <label for="inputPassword" style="color:white">Contraseña:</label>
+                <div class="input-group">
+                  <input type="password" name="password" required id="id_password" class="form-control" />
+                  <div class="input-group-append">
+                    <button type="button" onclick='togglePassword(document.getElementById("showPasswordBtn"),document.getElementById("id_password"))' id="showPasswordBtn" class="btn btn-secondary show-password-button">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p><button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in mr-1" aria-hidden="true"></i>Acceder</button></p>
+              <br>
+              <p class="text-center"><a style="color:white" href="{% url 'password_reset' %}"><u>Olvidé mi contraseña</u></a></p>
+            </div>
+            <br>
+            <p align="center">¿No tienes una cuenta? <a href="{% url 'signup' %}"><span style="color:#0095f6">Regístrate</span></a></p>
+          </form>
+        
+        </div>
       </div>
     </div>
   </div>
 </main>
 {% endblock %}
+

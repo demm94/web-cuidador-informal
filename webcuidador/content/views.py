@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Topico
 from django.urls import reverse
 from django.core import serializers
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 
@@ -17,14 +18,24 @@ def check_medico(request):
         return True
     else:
         return False
-
+def pagination(list,request):
+    paginator = Paginator(list,6)
+    page = request.GET.get('page')
+    try:
+        content = paginator.page(page)
+    except PageNotAnInteger:
+        # Si la página no es un entero, mostrar la primera página
+        content = paginator.page(1)
+    except EmptyPage:
+        # Si la página está fuera del rango (por ejemplo, 9999), mostrar la última página de resultados
+        content = paginator.page(paginator.num_pages)
+    return content
 @login_required
 def home(request):
     busqueda = request.GET.get("buscar")
     cuidadores = Cuidador.objects.all()
     temas = None
     if busqueda:
-        print("Holaa jeje")
         temas = Tema.objects.filter(
             Q(nombre__icontains = busqueda)
         ).distinct
@@ -33,14 +44,18 @@ def home(request):
 @login_required
 def topicos(request):
     busqueda = request.GET.get("buscar")
-    topicos = Topico.objects.all()
-    dataSerialize = serializers.serialize('json', topicos, fields=['nombre'])
+    filtro_topico = request.GET.get("filtro_topico")
+
+    topicos_list = Topico.objects.all()
+    topicos = pagination(topicos_list,request)
     if busqueda:
-        print("Holaaa")
         topicos = Topico.objects.filter(
             Q(nombre__icontains = busqueda)
         ).distinct
-    return render(request, 'content/topicos.html', {'topicos': topicos, 'data': dataSerialize})
+    if filtro_topico:
+        topicos = topicos_list.filter(id=filtro_topico)
+    
+    return render(request, 'content/topicos.html', {'topicos': topicos, 'lista_topicos': topicos_list})
 
 @login_required
 def infografia(request, id_topico):
@@ -54,19 +69,27 @@ def infografia_consejos(request, id_tema):
 
 @login_required
 def top_controlador(request, id_topico):
+    
     nombreTopico = Topico.objects.get(id = id_topico) # Link anterior
-    subtopicos = Subtopico.objects.filter(topico__id = id_topico)
-    # Si existen subtopicos asociados a ese id_topico
-    if subtopicos:
+    subtopicos_list = Subtopico.objects.filter(topico__id = id_topico)
+    subtopicos = pagination(subtopicos_list,request)
+    if subtopicos_list:
+        print("IF SUBTOPICOS")
         # return redirect('content/subtopicos/')
         # Muestra todos esos subtopicos para seleccionar
         return render(request, 'content/subtopicos.html', {'subtopicos': subtopicos, 'nombreAnterior': nombreTopico})
     else:
-        temas = Tema.objects.filter(topico__id = id_topico)
-        if temas:
+        
+        temas_list = Tema.objects.filter(topico__id = id_topico)
+        temas =pagination(temas_list,request)
+        if temas_list:
+            print("HOLAA")
             return render(request, 'content/temas.html', {'temas': temas, 'nombreAnterior': nombreTopico})
         else:
-            detalles = DetalleTema.objects.filter(topico__id = id_topico)
+            print("Detalles")
+            detalles_list = DetalleTema.objects.filter(topico__id = id_topico)
+            detalles = pagination(detalles_list,request)
+        
             return render(request, 'content/detalles.html', {'detalles': detalles, 'nombreAnterior': nombreTopico})
 
 @login_required
@@ -88,8 +111,15 @@ def tema_controlador(request, id_tema):
 
 @login_required
 def consejos(request):
-    temas = Tema.objects.filter(nombre__icontains = "Consejos")
+    temas_list = Tema.objects.filter(nombre__icontains = "Consejos")
+    temas = pagination(temas_list,request)
+    
     return render(request, 'content/consejos.html', {'temas': temas})
+
+@login_required
+def test_screen(request):
+    return render(request,'content/screenTest.html')
+
 
 @login_required
 @user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 

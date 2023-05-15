@@ -1,10 +1,7 @@
-{% extends "core/base.html" %} {% block title %}Tópicos{% endblock %} {% block content %}
-<!--<div class="mb-2">
-        <form class="form-inline my-2 my-lg-0"> 
-            <input class="form-control mr-sm-2" type="search" placeholder="Buscar..." aria-label="Search" name="buscar" value="{{request.GET.buscar}}">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-        </form>
-    </div>-->
+{% extends "core/base.html" %} 
+{% block title %}Tópicos{% endblock %} 
+{% block content %}
+
 <form class=" my-lg-0" method="GET">
     <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar" name="buscar" value="{{request.GET.buscar}}">
@@ -13,39 +10,52 @@
         </div>
     </div>
 </form>
-<!--<div class="row">
-        {% for topico in seccion.topicos.all %}
-            <div class="col-sm-3">
-                <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">{{topico.nombre}}</h5>
-                    <p class="card-text">{{seccion.descripcion}}</p>
-                    <a href="{% url 'subtopicos' topico.id %}" class="btn btn-primary btn-block">Ver</a>
-                </div>
-                </div>
-            </div>
-
-        {% endfor %}-->
+<form class="form-inline mb-3" method="get" action="{% url 'topicos' %}">
+    <div class="input-group">
+      <div class="input-group-prepend mr-2">
+        <span class="text-center ml-1 centered"><i class="fa fa-filter mr-1"></i></span>
+        <span class="text-center ml-1 centered">Tópico: </span>
+      </div>
+      <select class="form-control mr-2" name="filtro_topico" onchange="this.form.submit()">
+        <option value="">Todos</option>
+        {% for topico in lista_topicos %}
+            {% if topico.id|stringformat:"s" == request.GET.filtro_topico %}
+                <option value="{{ topico.id }}" selected>{{ topico.nombre }}</option>
+            {% else %}
+                <option value="{{ topico.id }}">{{ topico.nombre }}</option>
+            {% endif %}
+        {% endfor %}
+        
+      </select>
+    </div>
+</form>
 <div class="row">
     {% for topico in topicos %}
-    <div class="col-12 col-sm-6 col-lg-4">
-        <div class="card mb-3">
+    <div class="col-md-4">
+        <div class="card mb-4 card-custom">
             <img class="card-img-top" height="210" src="{% if topico.imagen %}{{topico.imagen.url}}{% endif %}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">{{topico.nombre}}</h5>
-                <!--<p class="card-text">{{seccion.descripcion}}</p>-->
-                {% if topico.url_infografia %}
-                <!--<a href="{% url 'infografia' topico.id %}" class="stretched-link"></a>-->
-                <a style="z-index: 2;position: relative;" href="{% url 'infografia' topico.id %}">Ver infografía (opcional)</a> {% endif %}
-                <a href="{% url 'top_controlador' topico.id %}" class="stretched-link"></a>
+            <div class="card-body d-flex align-items-center justify-content-center">
+                <div class="text-center">
+                    <h5 class="card-title">{{topico.nombre}}</h5>
+                    <!--<p class="card-text">{{seccion.descripcion}}</p>-->
+                    <div class="row d-flex align-items-center justify-content-center">
+                        <a href="{% url 'top_controlador' topico.id %}" class="btn btn-primary  mr-1">Ver más</a>
+                        {% if topico.url_infografia %}
+                    <!--<a href="{% url 'infografia' topico.id %}" class="stretched-link"></a>-->
+                            <a href="{% url 'infografia' topico.id %}" class="btn btn-outline-primary">Ver infografía</a> 
+                        {% endif %}
+                        
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
     {% endfor %}
 </div>
-<div id="topicos" class="row">
+{% include 'pagination.html' with items=topicos %}
 
-</div>
+
 <script>
     /*var jsonData = JSON.parse('{{ data | safe }}');
                                     var cards = '';
