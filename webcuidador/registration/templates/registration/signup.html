@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Registro{% endblock %}
 {% block content %}
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 <style>
   .errorlist{color:red;}
   @media only screen and (max-width: 600px) {
@@ -16,59 +17,74 @@
       <div class="col-md-9 mx-auto mb-5">
         <form action="" method="post">
           {% csrf_token %}
-          <h3 align="center" class="mb-4 mobile-title">Regístrate para acceder a la plataforma</h3>
+          <h2 align="center" class="mb-4"><i class="fa fa-user-plus mr-2" aria-hidden="true"></i><br>Registro</h2>
           {{ form.non_field_errors }}
-          <div class="fieldWrapper my-2">
-              {{ form.username.errors }}
-              <label style="display:none;" for="{{ form.username.id_for_label }}">Username:</label>
+          <div class="form-container2">
+
+            <div class="form-group" title="{{ form.username.errors|striptags }}" data-toggle="tooltip_error" style="max-width: 50%;">
+              
+              <label style="color:white" for="{{ form.username.id_for_label }}">Nombre de usuario: <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="{{ form.username.help_text }}"></i> </label>
               {{ form.username }}
-              {{ form.username.help_text }}
-          </div>
-          <div class="fieldWrapper my-2">
-            {{ form.first_name.errors }}
-            <label style="display:none;" for="{{ form.first_name.id_for_label }}">Nombre:</label>
-            {{ form.first_name }}
-            {{ form.first_name.help_text }}
-        </div>
-        <div class="fieldWrapper my-2">
-          {{ form.last_name.errors }}
-          <label style="display:none;" for="{{ form.last_name.id_for_label }}">Apellido:</label>
-          {{ form.last_name }}
-          {{ form.last_name.help_text }}
-      </div>
-          <div class="fieldWrapper my-2">
+            </div>
+
+            <div class="input-group ">
+              <div class="form-group mr-1">
+                {{ form.first_name.errors }}
+                <label style="color:white" for="{{ form.first_name.id_for_label }}">Nombre: </label>
+                {{ form.first_name }}
+                {{ form.first_name.help_text }}
+              </div>
+              <div class="form-group mr-3">
+                {{ form.last_name.errors }}
+                <label style="color:white" for="{{ form.last_name.id_for_label }}">Apellido:</label>
+                {{ form.last_name }}
+                {{ form.last_name.help_text }}
+              </div>
+            
+                <div class="form-group" title="{{ form.is_medico.errors|striptags }}" data-toggle="tooltip_error">
+                    <div class="form-group">
+                      <label for="{{ form.is_medico.id_for_label }}" style="color:white">Médico:</label>
+                      {{ form.is_medico }}
+                    </div>
+                    <div class="form-group">
+                      <label for="{{ form.is_cuidador.id_for_label }}" style="color:white">Cuidador:</label>
+                      {{ form.is_cuidador }}
+                    </div>
+                </div>     
+            </div>
+          <div class="form-group" style="max-width: 50%;">
             {{ form.email.errors }}
-            <label style="display:none;" for="{{ form.email.id_for_label }}">Email:</label>
+            <label style="color:white;" for="{{ form.email.id_for_label }}">Correo electrónico:</label>
             {{ form.email }}
             {{ form.email.help_text }}
           </div>
-          <div class="fieldWrapper my-2">
-            {{ form.is_medico.errors }}
-          </div>
-          <div class="row my-2">
-              <div class="col-7">
-                <label for="{{ form.is_medico.id_for_label }}">Personal de Salud:</label>
-                {{ form.is_medico }}
+
+          <div class="input-group mb-1">
+
+            <div class="form-group mr-1" title="{{ form.password1.errors|striptags }}" data-toggle="tooltip_error">
+              
+              <label style="color: white;" for="{{ form.password1.id_for_label }}">Contraseña: <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="{{ form.password1.help_text }}"></i></label>
+              {{ form.password1 }}
+              
+            </div>
+            <div class="form-group" title="{{ form.password2.errors|striptags }}" data-toggle="tooltip_error">
+              <label style="color: white;" for="{{ form.password2.id_for_label }}">Repite la contraseña:</label>
+              <div class="input-group">
+                <input type="password" name="password2" autofocus maxlength="254" required
+                  id="{{ form.password2.id_for_label }}" class="form-control" placeholder="Confirme contraseña"/>
+                <div class="input-group-append">
+                  <button type="button" onclick='togglePassword(document.getElementById("showPasswordBtn"),document.getElementById("{{ form.password2.id_for_label }}"))' id="showPasswordBtn" class="btn btn-secondary show-password-button">
+                    <i class="fa fa-eye"></i>
+                  </button>
+                </div>
+  
               </div>
-              <div class="col-5">
-                {{ form.is_cuidador.errors }}
-                <label for="{{ form.is_cuidador.id_for_label }}">Cuidador:</label>
-                {{ form.is_cuidador }}
-              </div>
+              
+            </div>
           </div>
-          <div class="fieldWrapper my-2">
-            {{ form.password1.errors }}
-            <label style="display:none;" for="{{ form.password1.id_for_label }}">Email:</label>
-            {{ form.password1 }}
-            {{ form.password1.help_text }}
+          <p style="width: 70%; margin: 0 auto;" ><input onsubmit="return validateForm();" type="submit" class="btn btn-primary btn-block" value="Confirmar"></p>
           </div>
-          <div class="fieldWrapper my-2">
-            {{ form.password2.errors }}
-            <label style="display:none;" for="{{ form.password2.id_for_label }}">Email:</label>
-            {{ form.password2 }}
-            {{ form.password2.help_text }}
-          </div>
-          <p><input onsubmit="return validateForm();" type="submit" class="btn btn-primary btn-block" value="Confirmar"></p>
+          
         </form>
       </div>
     </div>

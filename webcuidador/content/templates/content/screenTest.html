@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+
+{% block title %}Tests{% endblock %}
+{% block content %}
+<div class="row" style="justify-content: center; display: flex;">
+  <div class="col-md-4">
+    <div class="card mb-3 card-custom" >
+        <div class="card-img-top mb-1 d-flex align-items-center justify-content-center card-top" style="background-color: #DBE0E6;">
+          <h5 class="card-title">Test NPI-Q</h5>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center">
+            <div class="text-center">
+                <p class="card-text">Evaluación de paciente con demencia.</p>
+                <a href="{% url 'test_npi' %}" class="btn btn-primary stretched-link">Entrar</a>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card mb-3 card-custom" >
+        <div class="card-img-top mb-1 d-flex align-items-center justify-content-center card-top" style="background-color: #F5E7CD;">
+          <h5 class="card-title">Test ZARIT</h5>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center">
+            <div class="text-center">
+                <p class="card-text">Medir sobrecarga del cuidador.</p>
+                <a href="{% url 'test_zarit' %}" class="btn btn-primary stretched-link">Entrar</a>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+  
+
+
+{% endblock  %}

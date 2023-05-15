@@ -1,18 +1,28 @@
-{% extends "core/base.html" %} {% block title %}Consejos{% endblock %} {% block content %}
-<h2>Consejos al cuidador</h2>
+{% extends "core/base.html" %} 
+{% block title %}Consejos{% endblock %} 
+{% block content %}
+<h2 align="center" class="mb-4">Consejos al cuidador</h2>
 <div class="row">
     {% for tema in temas %}
-    <div class="col-12 col-sm-6 col-lg-4">
-        <div class="card mb-3">
+    <div class="col-md-4">
+        <div class="card mb-4 card-custom">
             <img class="card-img-top" height="210" src="{% if tema.imagen %}{{tema.imagen.url}}{% endif %}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">{{tema.nombre}}</h5>
-                <!--<p class="card-text">{{seccion.descripcion}}</p>-->
-                {% if tema.url_infografia %}<a style="z-index: 2;position: relative;" href="{% url 'infografia_consejos' tema.id %}">Ver infografía (opcional)</a> {% endif %}
-                <a href="{% url 'tema_controlador' tema.id %}" class="stretched-link"></a>
+            <div class="card-body d-flex align-items-center justify-content-center">
+                <div class="text-center">
+                    <h5 class="card-title">{{tema.nombre}}</h5>
+                    <!--<p class="card-text">{{seccion.descripcion}}</p>-->
+                    {% if tema.url_infografia %}
+                        <a class="btn btn-outline-primary" href="{% url 'infografia_consejos' tema.id %}">Ver infografía</a> 
+                    {% endif %}
+                    <a href="{% url 'tema_controlador' tema.id %}" class="stretched-link"></a>
+
+                </div>
+                
             </div>
         </div>
     </div>
     {% endfor %}
 </div>
+{% include 'pagination.html' with items=temas %}
+
 {% endblock %}
