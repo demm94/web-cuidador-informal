@@ -16,4 +16,5 @@ urlpatterns = [
     path('tests/<int:id_usuario>/', views.test_cuidador, name='test_cuidador'),
     path('tests/npi/<int:id_npi>/', views.ver_npi, name='ver_npi'),
     path('tests/zarit/<int:id_zarit>/', views.ver_zarit, name='ver_zarit'),
+    path('agregar_cuidador/', views.agregar_cuidador, name='agregar_cuidador'),
 ]

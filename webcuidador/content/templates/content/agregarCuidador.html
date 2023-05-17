@@ -1,0 +1,70 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+  
+
+    {% if user.is_medico %}
+    <h2 align="center" class="mb-4"><i class="fa fa-user-plus mr-2" aria-hidden="true"></i> Agregar Cuidador</h2>
+      <form method="post">
+        {% csrf_token %}
+        <table id="tablaCuidadores" class="table">
+                    
+                    
+          <thead>
+              
+          <tr>
+              <th scope="col">Nombre Cuidador</th>
+              <th scope="col">Edad</th>
+              <th scope="col">Estado civil</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Relación paciente</th>
+              <th scope="col">Inicio cuidados</th>
+              <th scope="col"></th>
+              <!--<th scope="col">Síntomas</th>-->
+          </tr>
+          </thead>
+          <tbody>
+          {% for cuidador in cuidadores_list %}  
+              <tr>
+                  <th scope="row">{{cuidador.user.first_name}} {{cuidador.user.last_name}}</th>
+                  <td>{{cuidador.edad}} años</td>
+                  <td>{{cuidador.estado_civil}}(a)</td>
+                  <td><span class="badge badge-info">{{cuidador.tipo}}</span></td>
+                  <td>{{cuidador.relacion_paciente}}(a)</td>
+                  <td>{{cuidador.fecha_cuidado}}</td>
+                  <td><button id="btn-agregar" name="id_cuidador" value="{{ cuidador.id }}" type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#confirmacionModal">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar
+                  </button></td>
+              </tr>
+              <!-- Modal de Confirmación -->
+              <div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="confirmacionModalLabel">Confirmar Agregar Cuidador</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>¿Estás seguro de que deseas agregar este cuidador?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" name="id_cuidador" value="{{ cuidador.id }}" class="btn btn-success">Agregar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          {% endfor %}
+          </tbody>
+        </table>
+      </form>
+
+      
+
+     
+    {% endif %}
+{% endblock %}

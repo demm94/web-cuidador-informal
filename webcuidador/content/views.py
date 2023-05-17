@@ -33,7 +33,7 @@ def pagination(list,request):
 @login_required
 def home(request):
     busqueda = request.GET.get("buscar")
-    cuidadores = Cuidador.objects.all()
+    cuidadores = Cuidador.objects.filter(medico__id = request.user.id)
     temas = None
     if busqueda:
         temas = Tema.objects.filter(
@@ -74,7 +74,6 @@ def top_controlador(request, id_topico):
     subtopicos_list = Subtopico.objects.filter(topico__id = id_topico)
     subtopicos = pagination(subtopicos_list,request)
     if subtopicos_list:
-        print("IF SUBTOPICOS")
         # return redirect('content/subtopicos/')
         # Muestra todos esos subtopicos para seleccionar
         return render(request, 'content/subtopicos.html', {'subtopicos': subtopicos, 'nombreAnterior': nombreTopico})
@@ -83,10 +82,8 @@ def top_controlador(request, id_topico):
         temas_list = Tema.objects.filter(topico__id = id_topico)
         temas =pagination(temas_list,request)
         if temas_list:
-            print("HOLAA")
             return render(request, 'content/temas.html', {'temas': temas, 'nombreAnterior': nombreTopico})
         else:
-            print("Detalles")
             detalles_list = DetalleTema.objects.filter(topico__id = id_topico)
             detalles = pagination(detalles_list,request)
         
@@ -137,9 +134,23 @@ def ver_npi(request, id_npi):
     return render(request, 'content/testNPI.html', {'form': form, 'form_instance': form_instance})
 
 @login_required
-@user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
 def ver_zarit(request, id_zarit):
     form_instance = RespuestaZarit.objects.get(id=id_zarit)
     form = TestZaritForm(instance=form_instance)
     return render(request, 'content/testZarit.html', {'form': form, 'form_instance': form_instance})
+@login_required
+@user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
+def agregar_cuidador(request):
+    if request.method=='POST':
+        id_cuidador = request.POST.get('id_cuidador')
+        if id_cuidador:
+            try:
+                cuidador = Cuidador.objects.get(id=id_cuidador)
+                cuidador.medico = request.user
+                cuidador.save()
+            except Cuidador.DoesNotExist:
+                print("Cuidador no existe")
+                
+    cuidadores_list = Cuidador.objects.filter(medico__isnull=True)
 
+    return render(request, 'content/agregarCuidador.html',{'cuidadores_list': cuidadores_list})

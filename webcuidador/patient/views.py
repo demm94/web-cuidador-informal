@@ -22,6 +22,7 @@ def info_cuidador(request):
     test = Test.objects.filter(cuidador=request.user)
     try:
         cuidador = Cuidador.objects.get(user=request.user)
+        
     except Cuidador.DoesNotExist:
         cuidador = None
     return render(request, 'patient/info_cuidador.html', {'cuidador': cuidador, 'test': test})
@@ -143,8 +144,10 @@ def registrar_perfil_cuidador(request):
 @login_required # registrar perfil de cuidador requiere que el cuidador esté logeado en el sistema
 @user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL)
 def editar_perfil_cuidador(request, id_cuidador):
-    cuidador = Cuidador.objects.filter(user=request.user) 
-    if cuidador:    #Evita que se vuelva a ingresar el perfil del cuidador si ya hay uno registrado, redireccionando a "Mi paciente"
+    cuidador = Cuidador.objects.get(user=request.user) 
+    #Evita que se vuelva a ingresar el perfil del cuidador si ya hay uno registrado, redireccionando a "Mi paciente"
+    #además evita ingresar a editar otro "cuidador" desde la URL 
+    if cuidador and id_cuidador==cuidador.id:    
         if request.method == 'POST':
             form_instance = Cuidador.objects.get(pk=id_cuidador)
             form = CuidadorForm(request.POST, instance=form_instance)

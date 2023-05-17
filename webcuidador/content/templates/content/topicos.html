@@ -55,25 +55,4 @@
 </div>
 {% include 'pagination.html' with items=topicos %}
 
-
-<script>
-    /*var jsonData = JSON.parse('{{ data | safe }}');
-                                    var cards = '';
-                                    jsonData.forEach(element => {
-                                        //console.log(element.fields.nombre);
-                                        var url = "{% url 'top_controlador' 999 %}".replace(999, element.pk.toString());
-                                        cards+= `
-                                            <div class="col-sm-4">
-                                                <div class="card mb-3">
-                                                    <img class="card-img-top" src="https://familiados.com/blog/wp-content/uploads/2018/02/caminando-trasera-del-parque-natural-de-ir_1098-4247.jpg" alt="Card image cap">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">${element.fields.nombre}</h5>
-                                                        <!--<p class="card-text"></p>-->
-                                                        <a href=${url} class="stretched-link"></a>
-                                                    </div>
-                                                </div>
-                                            </div>`;
-                                         });
-                                    //$('#topicos').html(cards);*/
-</script>
 {% endblock %}
