@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,10 +9,15 @@
     demencia. Puedes buscar información, tener un perfil, realizar exámenes y ver historiales.">
     <meta property="og:image" content="https://images.vexels.com/media/users/3/130909/isolated/preview/de35bf1732fa08be557bbaac9c8d1f22-icono-de-coraz-oacute-n-de-frecuencia-card-iacute-aca-by-vexels.png">
 
+    <!-- Local -->
+    <link rel="stylesheet" type="text/css" href='{% static "styles/style2.css" %}'>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css">
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -22,7 +28,7 @@
     <title>{% block title %}{% endblock%}</title>
 </head>
 
-<body>
+<body> 
 
     <style>
         .second-nav {
@@ -32,55 +38,70 @@
 
     <!-- Barra de navegación -->
 
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color:#5C5E61 ;">
         <a style="font-family: 'Teko', sans-serif;font-size: 22px;" class="navbar-brand" {% if request.user.is_authenticated %}href="{% url 'home'%}" {% else %}href="{% url 'portada'%}" {% endif %}><i class="fa fa-heartbeat mr-1" aria-hidden="true"></i>CareForMe</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" >
             {% if request.user.is_authenticated %}
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item {% if '/content/' in request.path and '/consejos/' not in request.path %}active{% endif %}">
-                    <a class="nav-link" href="{% url 'home' %}">Inicio <span class="sr-only">(current)</span></a>
-                </li>
-                {% if not request.user.is_staff and request.user.is_cuidador %}
-                <li class="nav-item {% if '/patient/' in request.path %}active{% endif %}">
-                    <a class="nav-link" href="{% url 'info_cuidador' %}">Cuidador</a>
-                </li>
-                <li class="nav-item {% if '/consejos/' in request.path %}active{% endif %}">
-                    <a class="nav-link" href="{% url 'consejos' %}">Consejos</a>
-                </li>
-                {% elif request.user.is_staff or request.user.is_gestionador %}
-                <li class="nav-item {% if request.path == '/admin/' %}active{% endif %}">
-                    <a class="nav-link" href="/admin/">Administrar</a>
-                </li>
-                <li class="nav-item {% if request.path == '/content/consejos/' %}active{% endif %}">
-                    <a class="nav-link" href="{% url 'consejos' %}">Consejos</a>
-                </li>
-                {% elif request.user.is_medico %}
-                <li class="nav-item {% if 'change-password' in request.path %}active{% endif %}">
-                    <a class="nav-link" href="{% url 'change-password' %}">Cambiar contraseña</a>
-                </li>
-                {% endif %}
-            </ul>
-            <a class="nav-link disabled pl-0" href="#" tabindex="-1" aria-disabled="true"><i class="fa fa-user mr-2 mb-2" aria-hidden="true"></i>{{user.get_username}}</a>
-            <a href="{% url 'logout' %}" class="btn btn-outline-danger" tabindex="-1" role="button" aria-disabled="true"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Cerrar Sesión</a> {% endif %}
+              <ul class="navbar-nav ml-auto">
+                  <li class="nav-item {% if request.path == '/content/' %}active{% endif %}">
+                      <a class="nav-link" href="{% url 'home' %}">Inicio <span class="sr-only">(current)</span></a>
+                  </li>
+                  {% if not request.user.is_staff and request.user.is_cuidador %}
+                  <li class="nav-item {% if '/topicos/' in request.path %}active{% endif %}">
+                      <a class="nav-link" href="{% url 'topicos' %}">Tópicos</a>
+                  </li>
+                  <li class="nav-item {% if '/consejos/' in request.path %}active{% endif %}">
+                      <a class="nav-link" href="{% url 'consejos' %}">Consejos</a>
+                  </li>
+                  <li class="nav-item {% if '/tests/' in request.path %}active{% endif %}">
+                      <a class="nav-link" href="{% url 'test_screen' %}" >Test</a>
+                  </li>
+                  <li class="nav-item {% if '/preguntas/' in request.path %}active{% endif %}">
+                      <a class="nav-link" >Preguntas</a>
+                  </li>
+                  {% elif request.user.is_staff or request.user.is_gestionador %}
+                  <li class="nav-item {% if request.path == '/admin/' %}active{% endif %}">
+                      <a class="nav-link" href="/admin/">Administrar</a>
+                  </li>
+                  <li class="nav-item {% if request.path == '/content/consejos/' %}active{% endif %}">
+                      <a class="nav-link" href="{% url 'consejos' %}">Consejos</a>
+                  </li>
+                  {% elif request.user.is_medico %}
+                  
+                  {% endif %}
+              </ul>
+              <ul class="navbar-nav ml-auto mr-1">
+                  <li class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-user mr-2 mb-2" aria-hidden="true"></i>{{user.get_username}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="{% url 'info_cuidador' %}">Perfil</a>
+                      <a class="dropdown-item" href="#">Paciente</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item"  href="{% url 'logout' %}"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Cerrar sesión</a>
+                    </div>
+                  </li>
+              </ul>
+            {% endif %}
+            
         </div>
     </nav>
-    {% if request.user.is_authenticated and request.path != '/content/' %}
-    <nav style="z-index: 1" class="navbar sticky-top navbar-light bg-light second-nav">
-        <!--<a href="{{ request.META.HTTP_REFERER }}" class="navbar-brand"><i class="fa fa-chevron-left mr-2" aria-hidden="true"></i>Atrás</a>-->
-        <a href="" onClick="window.history.back();return false;" class="navbar-brand"><i class="fa fa-chevron-left mr-2" aria-hidden="true"></i>Atrás</a>
-    </nav>
-    {% endif %}
+   
 
     <!--Contenido-->
-    <div class="container p-3">
+    
+      <div class="container p-3 vh-100">
         {% block content %} {% endblock %}
-    </div>
+      </div>
+   
+    
 
     {% if request.path != "/accounts/login/" %}
-    <hr>{% endif %}
+    {% endif %}
 
     <!-- Pie de Página -->
     <!-- Popover -->

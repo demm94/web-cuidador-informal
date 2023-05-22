@@ -50,6 +50,7 @@ class Cuidador(models.Model):
     tipo = models.CharField(max_length=10, verbose_name="Tipo de Cuidador")
     relacion_paciente = models.CharField(max_length=20, verbose_name="Relación con paciente")
     fecha_cuidado = models.DateField(verbose_name="Inicio de cuidados")
+    medico = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cuidadores', verbose_name='Médico', null=True)
 
     class Meta:
         verbose_name = 'Cuidador'

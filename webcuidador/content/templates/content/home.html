@@ -1,7 +1,9 @@
 {% extends "core/base.html" %}
-
+{% load static %}
 {% block title %}Home{% endblock %}
 {% block content %}
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
     <style>
     @media only screen and (max-width: 600px) {
         #titulo-medico {
@@ -17,9 +19,19 @@
         </h2>
         <blockquote class="blockquote">
             <p class="mb-0" style="font-size: 1rem;">A continuación puedes ver la lista de todos los cuidadores de la plataforma.</p>
-          </blockquote>
+            
+        </blockquote>
+        <div style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;">
+            <a class="btn btn-success" href="{% url 'agregar_cuidador' %}">
+                Agregar
+            </a>     
+                    
+        </div>
             <table id="tablaCuidadoresMedico" class="table">
+                
+                
                 <thead>
+                    
                 <tr>
                     <th scope="col">Nombre Cuidador</th>
                     <th scope="col">Edad</th>
@@ -46,39 +58,10 @@
                 {% endfor %}
                 </tbody>
             </table>
-          <script>
-              $(document).ready(function(){
-                $('#tablaCuidadoresMedico').DataTable({
-                    "responsive": true,
-                    "bAutoWidth": false,
-                    "aLengthMenu": [[5,10, 25, 50, 100, -1], [5,10, 25, 50, 100, "Todos"]],
-                    "iDisplayLength": 5,
-                    "language": {   // Cambiode lenguaje a español
-                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                        "sLengthMenu": "Mostrar _MENU_  registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sSearch": "Buscar:",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
-              });
-          </script>
     {% else %}
         {% if 'profile_error' in request.GET %}
         <div class="alert alert-warning" role="alert">
-            Para realizar un test, primero debes completar tu perfil en la sección <a href="{% url 'info_cuidador' %}">Cuidador</a>!
+            Para realizar un test, primero debes completar tu perfil en la sección <a href="{% url 'info_cuidador' %}">Perfil</a>!
         </div>
         {% endif %}
         <form class=" my-lg-0" method="GET">
@@ -92,68 +75,56 @@
         <div class="row">
             {% if not 'buscar' in request.GET %}
                 <div class="col-md-4">
-                    <div class="card mb-3">
-                        <img class="card-img-top" src="https://www.psicoajuda.pt/wp-content/uploads/2019/04/0197-Cuidador-Informal_opt.jpg" alt="Card image cap">
-                        <div class="card-body">
-                        <h5 class="card-title">Educación para el cuidador</h5>
-                        <p class="card-text">Aquí encontrarás diferentes tópicos relacionados a temas de educación para el cuidador</p>
-                        <a href="{% url 'topicos' %}" class="stretched-link"></a>
+                    <div class="card mb-3 card-custom" >
+                        <img class="card-img-top " height="210" src="https://www.psicoajuda.pt/wp-content/uploads/2019/04/0197-Cuidador-Informal_opt.jpg" alt="Card image cap">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <div class="text-center">
+                                <h5 class="card-title">Educación para el cuidador</h5>
+                                <p class="card-text">Aquí encontrarás diferentes tópicos relacionados a temas de educación para el cuidador</p>
+                                <a href="{% url 'topicos' %}" class="btn btn-primary stretched-link">Entrar</a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card mb-3">
-                        <img class="card-img-top" src="https://i.pinimg.com/originals/81/d2/8b/81d28b5217bc952fd18999e59a31f1cf.jpg" alt="Card image cap">
-                        <div class="card-body">
-                        <h5 class="card-title">Consejos sobre el cuidado</h5>
-                        <p class="card-text">Aquí encontrarás consejos sobre disitintos temas para el cuidado del adulto mayor.</p>
-                        <a href="{% url 'consejos' %}" class="stretched-link"></a>
+                    <div class="card mb-3 card-custom">
+                        <img class="card-img-top" height="210" src="https://i.pinimg.com/originals/81/d2/8b/81d28b5217bc952fd18999e59a31f1cf.jpg" alt="Card image cap">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <div class="text-center">
+                                <h5 class="card-title">Consejos sobre el cuidado</h5>
+                                <p class="card-text">Aquí encontrarás consejos sobre disitintos temas para el cuidado del adulto mayor.</p>
+                                <a href="{% url 'consejos' %}" class="btn btn-primary stretched-link">Entrar</a>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
-                <style>
-                    .test-choice a {
-                    opacity: 0; 
-                    cursor: pointer;
-                    }
-                    .test-choice a:hover {
-                        opacity: 1;
-                    }
-                    .centered {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        font-size: 1.7rem;
-                        font-weight: bolder;
-                        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-                    }
-                </style>
-                <div class="col-md-4 test-choice">
-                    <div style="background-color:rgb(219, 224, 230)" class="card mb-1">
-                        <a href="{% url 'test_npi' %}" class="stretched-link">
-                            <img src="https://static2.abc.es/media/201101/26/inteligencia1--644x362.jpg" class="card-img-top" alt="...">
-                        </a>
-                        <div  class="centered">TEST NPI-Q</div>
-                    </div>
-                    <div style="background-color: rgb(245, 231, 205);" class="card mb">
-                        <a href="{% url 'test_zarit' %}" class="stretched-link">
-                            <img src="https://static2.abc.es/media/201101/26/inteligencia1--644x362.jpg" class="card-img-top" alt="...">
-                        </a>
-                        <div class="centered">TEST ZARIT</div>
+                <div class="col-md-4">
+                    <div class="card mb-3 card-custom">
+                        <img class="card-img-top" height="210" src="https://static2.abc.es/media/201101/26/inteligencia1--644x362.jpg" alt="Card image cap">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <div class="text-center">
+                                <h5 class="card-title">Test</h5>
+                                <p class="card-text">Realización de test por parte del cuidador, ya sea para medir sobrecarga del cuidador (ZARIT) o evaluar a paciente con demencia (NPI-Q).</p>
+                                <a href="{% url 'test_screen' %}" class="btn btn-primary stretched-link">Entrar</a>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
             {% else %}
                 {% if temas %}
                     {% for tema in temas %}
                         <div class="col-sm-4">
-                            <div class="card mb-3">
-                                <img class="card-img-top" src="{% if tema.imagen %}{{tema.imagen.url}}{% endif %}" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">{{tema.nombre}}</h5>
-                                <!--<p class="card-text">{{seccion.descripcion}}</p>-->
-                                <a href="{% url 'tema_controlador' tema.id %}" class="stretched-link"></a>
-                            </div>
+                            <div class="card mb-4 card-custom">
+                                <img class="card-img-top" height="210" src="{% if tema.imagen %}{{tema.imagen.url}}{% endif %}" alt="Card image cap">
+                                <div class="card-body d-flex align-items-center justify-content-center">
+                                    <div class="text-center">
+                                        <h5 class="card-title">{{tema.nombre}}</h5>
+                                    <!--<p class="card-text">{{seccion.descripcion}}</p>-->
+                                    <a href="{% url 'tema_controlador' tema.id %}" class="stretched-link"></a>
+                                    </div>     
+                                </div>
                             </div>
                         </div>
                     {% endfor %}

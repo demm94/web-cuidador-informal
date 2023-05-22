@@ -2,10 +2,6 @@
 
 {% block title %}Test NPI{% endblock %}
 {% block content %}
-<h2 align="center">Formulario NPI-Q</h2>
-<p align="justify">El cuestionario neuropsiquíatrico (NPI) sólo deberá aplicarlo si es responsable de un paciente
-con demencia. Ayudará al médico a valorar qué trastornos presenta el adulto mayor y la severidad de estos.</p>
-
 <style>
     table {
   /* override Bootstrap's width */
@@ -22,126 +18,134 @@ td.min, th.min {
 
 </style>
 
+
+<h2 align="center">Formulario NPI-Q</h2>
+<p align="justify">El cuestionario neuropsiquíatrico (NPI) sólo deberá aplicarlo si es responsable de un paciente
+con demencia. Ayudará al médico a valorar qué trastornos presenta el adulto mayor y la severidad de estos.</p>
+
+
+
 <div class="row">
     <div class="col-md-12">
         <form action="{% url 'test_npi' %}" method="post">
             {% csrf_token %}
-            <table id="tabla_preguntas" class="table table-responsive" style="width:100%">
-                <thead>
-                    <tr>
-                        <th scope="col">Pregunta</th>
-                        <th class="min">Síntoma(s) <i class="fa fa-question-circle" aria-hidden="true" tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" title="Síntoma(s)"
-                            data-content="Para cada ítem marcado <b>Sí</b>, registre la SEVERIDAD del síntoma (como éste afecta al paciente):"></i></th>
-                        <th class="min">Severidad <i class="fa fa-question-circle" aria-hidden="true" tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" title="Severidad"
-                        data-content="<b>Leve</b> (notable, pero no es un cambio significativo) <br><b>Moderado</b> (significativo pero no es un cambio dramático) <br><b>Severo</b> (muy marcado o prominente; cambio dramático)"></i></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                        <tr class="table-active">
-                            <td><strong>1. Delirios</strong> — ¿Tiene el paciente creencias falsas, como creer que otras personas le
-                                están robando o que planean hacerle daño de alguna manera?</td>
-                            <td class="min"><label for="{{ form.r1a.id_for_label }}">1a:</label>
-                                {{ form.r1a }}</td>
-                            <td class="min"><label for="{{ form.r1b.id_for_label }}">1b:</label>
-                                {{ form.r1b }}</td>
-                        </tr>
+                <table id="tabla_preguntas" class="table table-responsive" style="width:100%">
+                    <thead>
                         <tr>
-                            <td><strong>2. Alucinaciones</strong> — ¿Tiene el paciente alucinaciones como visiones falsas o voces?
-                                ¿Actúa el paciente como si oyera o viera cosas que no están presentes?</td>
-                            <td><label for="{{ form.r2a.id_for_label }}">2a:</label>
-                                {{ form.r2a }}</td>
-                            <td><label for="{{ form.r2b.id_for_label }}">2b:</label>
-                                {{ form.r2b }}</td>
+                            <th scope="col">Pregunta</th>
+                            <th class="min">Síntoma(s) <i class="fa fa-question-circle" aria-hidden="true" tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" title="Síntoma(s)"
+                                data-content="Para cada ítem marcado <b>Sí</b>, registre la SEVERIDAD del síntoma (como éste afecta al paciente):"></i></th>
+                            <th class="min">Severidad <i class="fa fa-question-circle" aria-hidden="true" tabindex="0" data-toggle="popover" data-trigger="focus" data-html="true" title="Severidad"
+                            data-content="<b>Leve</b> (notable, pero no es un cambio significativo) <br><b>Moderado</b> (significativo pero no es un cambio dramático) <br><b>Severo</b> (muy marcado o prominente; cambio dramático)"></i></th>
                         </tr>
-                        <tr class="table-active">
-                            <td><strong>3. Agitación o agresividad</strong> — ¿Se resiste el paciente a la ayuda de otros o es difícil
-                                de manejar?</td>
-                            <td><label for="{{ form.r3a.id_for_label }}">3a:</label>
-                                {{ form.r3a }}</td>
-                            <td><label for="{{ form.r3b.id_for_label }}">3b:</label>
-                                {{ form.r3b }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>4. Depresión o disforia</strong> — ¿Actúa el paciente como si estuviera triste o dice que esta
-                                deprimido?</td>
-                            <td><label for="{{ form.r4a.id_for_label }}">4a:</label>
-                                {{ form.r4a }}</td>
-                            <td><label for="{{ form.r4b.id_for_label }}">4b:</label>
-                                {{ form.r4b }}</td>
-                        </tr>
-                        <tr class="table-active">
-                            <td><strong>5. Ansiedad</strong> — ¿Se molesta el paciente cuando se separa de usted? ¿Muestra otras
-                                señales de nerviosismo, como falta de aire, suspiros, incapacidad de relajarse o se
-                                siente excesivamente tenso?</td>
-                            <td><label for="{{ form.r5a.id_for_label }}">5a:</label>
-                                {{ form.r5a }}</td>
-                            <td><label for="{{ form.r5b.id_for_label }}">5b:</label>
-                                {{ form.r5b }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>6. Euforia o exaltación</strong> — ¿Parece que el paciente se siente demasiado bien o actúa
-                                excesivamente alegre?</td>
-                            <td><label for="{{ form.r6a.id_for_label }}">6a:</label>
-                                {{ form.r6a }}</td>
-                            <td><label for="{{ form.r6b.id_for_label }}">6b:</label>
-                                {{ form.r6b }}</td>
-                        </tr>
-                        <tr class="table-active">
-                            <td><strong>7. Apatia o indiferencia</strong> — ¿Parece el paciente menos interesado en sus actividades
-                                habituales o en las actividades y planes de los demás?</td>
-                            <td><label for="{{ form.r7a.id_for_label }}">7a:</label>
-                                {{ form.r7a }}</td>
-                            <td><label for="{{ form.r7b.id_for_label }}">7b:</label>
-                                {{ form.r7b }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>8. Pérdida de la inhibición/ Desinhibición</strong> — ¿Parece que el paciente actúa
-                                impulsivamente? Por ejemplo, habla el paciente con extraños como si los conociera
-                                o dice cosas que podrían herir los sentimientos de los demás?</td>
-                            <td><label for="{{ form.r8a.id_for_label }}">8a:</label>
-                                {{ form.r8a }}</td>
-                            <td><label for="{{ form.r8b.id_for_label }}">8b:</label>
-                                {{ form.r8b }}</td>
-                        </tr>
-                        <tr class="table-active">
-                            <td><strong>9. Irritabilidad o labilidad</strong> — ¿Se muestra el paciente irritable o impaciente? ¿Tiene
-                                dificultad para lidiar con retrasos o para esperar actividades planeadas?</td>
-                            <td><label for="{{ form.r9a.id_for_label }}">9a:</label>
-                                {{ form.r9a }}</td>
-                            <td><label for="{{ form.r9b.id_for_label }}">9b:</label>
-                                {{ form.r9b }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>10. Disturbio motor</strong> — ¿Lleva a cabo el paciente actividades repetitivas, como
-                                dar vueltas por la casa, jugar con botones, enrollar hilos o hacer otras cosas
-                                repetitivamente?</td>
-                            <td><label for="{{ form.r10a.id_for_label }}">10a:</label>
-                                {{ form.r10a }}</td>
-                            <td><label for="{{ form.r10b.id_for_label }}">10b:</label>
-                                {{ form.r10b }}</td>
-                        </tr>
-                        <tr class="table-active">
-                            <td><strong>11. Conductas nocturnas</strong> — ¿Le despierta el paciente durante la noche, se levanta
-                                muy temprano por la mañana o toma siestas excesivas durante el día?</td>
-                            <td><label for="{{ form.r11a.id_for_label }}">11a:</label>
-                                {{ form.r11a }}</td>
-                            <td><label for="{{ form.r11b.id_for_label }}">11b:</label>
-                                {{ form.r11b }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>12. Apetito y alimentación</strong> — ¿El paciente ha perdido o aumentado de peso o ha tenido
-                                algún cambio en la comida que le gusta?</td>
-                            <td><label for="{{ form.r12a.id_for_label }}">12a:</label>
-                                {{ form.r12a }}</td>
-                            <td><label for="{{ form.r12b.id_for_label }}">12b:</label>
-                                {{ form.r12b }}</td>
-                        </tr>
-
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+    
+                            <tr class="table-active">
+                                <td><strong>1. Delirios</strong> — ¿Tiene el paciente creencias falsas, como creer que otras personas le
+                                    están robando o que planean hacerle daño de alguna manera?</td>
+                                <td class="min"><label for="{{ form.r1a.id_for_label }}">1a:</label>
+                                    {{ form.r1a }}</td>
+                                <td class="min"><label for="{{ form.r1b.id_for_label }}">1b:</label>
+                                    {{ form.r1b }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Alucinaciones</strong> — ¿Tiene el paciente alucinaciones como visiones falsas o voces?
+                                    ¿Actúa el paciente como si oyera o viera cosas que no están presentes?</td>
+                                <td><label for="{{ form.r2a.id_for_label }}">2a:</label>
+                                    {{ form.r2a }}</td>
+                                <td><label for="{{ form.r2b.id_for_label }}">2b:</label>
+                                    {{ form.r2b }}</td>
+                            </tr>
+                            <tr class="table-active">
+                                <td><strong>3. Agitación o agresividad</strong> — ¿Se resiste el paciente a la ayuda de otros o es difícil
+                                    de manejar?</td>
+                                <td><label for="{{ form.r3a.id_for_label }}">3a:</label>
+                                    {{ form.r3a }}</td>
+                                <td><label for="{{ form.r3b.id_for_label }}">3b:</label>
+                                    {{ form.r3b }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4. Depresión o disforia</strong> — ¿Actúa el paciente como si estuviera triste o dice que esta
+                                    deprimido?</td>
+                                <td><label for="{{ form.r4a.id_for_label }}">4a:</label>
+                                    {{ form.r4a }}</td>
+                                <td><label for="{{ form.r4b.id_for_label }}">4b:</label>
+                                    {{ form.r4b }}</td>
+                            </tr>
+                            <tr class="table-active">
+                                <td><strong>5. Ansiedad</strong> — ¿Se molesta el paciente cuando se separa de usted? ¿Muestra otras
+                                    señales de nerviosismo, como falta de aire, suspiros, incapacidad de relajarse o se
+                                    siente excesivamente tenso?</td>
+                                <td><label for="{{ form.r5a.id_for_label }}">5a:</label>
+                                    {{ form.r5a }}</td>
+                                <td><label for="{{ form.r5b.id_for_label }}">5b:</label>
+                                    {{ form.r5b }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>6. Euforia o exaltación</strong> — ¿Parece que el paciente se siente demasiado bien o actúa
+                                    excesivamente alegre?</td>
+                                <td><label for="{{ form.r6a.id_for_label }}">6a:</label>
+                                    {{ form.r6a }}</td>
+                                <td><label for="{{ form.r6b.id_for_label }}">6b:</label>
+                                    {{ form.r6b }}</td>
+                            </tr>
+                            <tr class="table-active">
+                                <td><strong>7. Apatia o indiferencia</strong> — ¿Parece el paciente menos interesado en sus actividades
+                                    habituales o en las actividades y planes de los demás?</td>
+                                <td><label for="{{ form.r7a.id_for_label }}">7a:</label>
+                                    {{ form.r7a }}</td>
+                                <td><label for="{{ form.r7b.id_for_label }}">7b:</label>
+                                    {{ form.r7b }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>8. Pérdida de la inhibición/ Desinhibición</strong> — ¿Parece que el paciente actúa
+                                    impulsivamente? Por ejemplo, habla el paciente con extraños como si los conociera
+                                    o dice cosas que podrían herir los sentimientos de los demás?</td>
+                                <td><label for="{{ form.r8a.id_for_label }}">8a:</label>
+                                    {{ form.r8a }}</td>
+                                <td><label for="{{ form.r8b.id_for_label }}">8b:</label>
+                                    {{ form.r8b }}</td>
+                            </tr>
+                            <tr class="table-active">
+                                <td><strong>9. Irritabilidad o labilidad</strong> — ¿Se muestra el paciente irritable o impaciente? ¿Tiene
+                                    dificultad para lidiar con retrasos o para esperar actividades planeadas?</td>
+                                <td><label for="{{ form.r9a.id_for_label }}">9a:</label>
+                                    {{ form.r9a }}</td>
+                                <td><label for="{{ form.r9b.id_for_label }}">9b:</label>
+                                    {{ form.r9b }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>10. Disturbio motor</strong> — ¿Lleva a cabo el paciente actividades repetitivas, como
+                                    dar vueltas por la casa, jugar con botones, enrollar hilos o hacer otras cosas
+                                    repetitivamente?</td>
+                                <td><label for="{{ form.r10a.id_for_label }}">10a:</label>
+                                    {{ form.r10a }}</td>
+                                <td><label for="{{ form.r10b.id_for_label }}">10b:</label>
+                                    {{ form.r10b }}</td>
+                            </tr>
+                            <tr class="table-active">
+                                <td><strong>11. Conductas nocturnas</strong> — ¿Le despierta el paciente durante la noche, se levanta
+                                    muy temprano por la mañana o toma siestas excesivas durante el día?</td>
+                                <td><label for="{{ form.r11a.id_for_label }}">11a:</label>
+                                    {{ form.r11a }}</td>
+                                <td><label for="{{ form.r11b.id_for_label }}">11b:</label>
+                                    {{ form.r11b }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>12. Apetito y alimentación</strong> — ¿El paciente ha perdido o aumentado de peso o ha tenido
+                                    algún cambio en la comida que le gusta?</td>
+                                <td><label for="{{ form.r12a.id_for_label }}">12a:</label>
+                                    {{ form.r12a }}</td>
+                                <td><label for="{{ form.r12b.id_for_label }}">12b:</label>
+                                    {{ form.r12b }}</td>
+                            </tr>
+    
+                    </tbody>
+                </table>
+            
             <div class="col text-center">
-                <input class="btn btn-info btn-block" type="submit" value="Terminar Test">
+                <input class="btn btn-success btn-block" type="submit" value="Terminar Test">
             </div>
         </form>
     </div>
@@ -212,4 +216,8 @@ td.min, th.min {
     deshabilitarSeccionB('r12a', 'r12b');
 
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+
 {% endblock  %}

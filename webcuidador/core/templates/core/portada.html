@@ -2,14 +2,26 @@
 
 {% block title %}CareForMe: plataforma de apoyo para los cuidadores informales.{% endblock %}
 {% block content %}
-    <div class="encabezado" align="center">
-        <h1>Bienvenido a CareForMe</h1>
-        <p>Plataforma en apoyo de los cuidadores informales.</p>
-    </div>
-    <div class="row justify-content-center">
-        <div class="mx-auto">
-            <a href="{% url 'login' %}" class="btn btn-outline-success btn-lg"><i class="fa fa-sign-in mr-1" aria-hidden="true"></i>Acceder</a>
-            <a href="{% url 'signup' %}" class="btn btn-outline-success btn-lg"><i class="fa fa-user-plus mr-1" aria-hidden="true"></i>Registrate</a>
+    <style>
+        body {
+            background-image: url("/media/background/landing.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+        }
+    </style>
+    <div class="container p-5 d-flex flex-column justify-content-center vh-95">
+        <div class="encabezado p-5" align="center">
+            <h1>Bienvenido a CareForMe</h1>
+            <br>
+            <p>Plataforma en apoyo de los cuidadores informales.</p>
         </div>
+        <div class="row justify-content-center">
+            <div class="mx-auto">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg"><i class="fa fa-sign-in mr-1" aria-hidden="true"></i>Acceder</a>
+            </div>
+        </div>   
+
     </div>
+    
 {% endblock  %}
