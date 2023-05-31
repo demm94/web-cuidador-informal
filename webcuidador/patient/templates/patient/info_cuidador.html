@@ -1,10 +1,10 @@
 {% extends "core/base.html" %}
 
-{% block title %}Paciente{% endblock %}
+{% block title %}Perfil{% endblock %}
 {% block content %}
 <div class="row">
-    <div class="col-sm-5">
-        <h2><i class="fa fa-user mr-2 mb-2" aria-hidden="true"></i>Mi Perfil de Cuidador</h2>
+    <div class="col-sm-8">
+        
         {% if 'edit' in request.GET %}
             <div class="alert alert-success" role="alert">
                 Perfil editado correctamente!.
@@ -26,86 +26,68 @@
             <!--<img src="cinqueterre.jpg" class="rounded" alt="Cinque Terre">-->
             <!--<p><b>Edad:</b> {{paciente.edad}}</p>
                 <p><b>Estado Civil:</b> {{paciente.estado_civil}}</p>-->
-                <h6 align="center">Por favor completa tu perfil de cuidador</h6>
-                <a href="{% url 'registrar_perfil_cuidador' %}" class="btn btn-outline-primary btn-block">Completar Perfil</a>
-        {% else %}
-            <p><b>Nombre:</b> {{user.first_name}} {{user.last_name}}</p>
-            <p><b>Edad:</b> {{cuidador.edad}} años</p>
-            <p><b>Estado Civil:</b> {{cuidador.estado_civil}}(a)</p>
-            <p><b>Tipo:</b> {{cuidador.tipo}}</p>
-            <p><b>Relación Paciente:</b> {{cuidador.relacion_paciente}}(a)</p>
-            <p><b>Inicio Cuidados:</b> {{cuidador.fecha_cuidado}}</p>
-            <div class="row">
-                <div class="col-12 mb-2">
-                    <a href="{% url 'editar_perfil_cuidador' cuidador.pk %}" class="btn btn-outline-primary btn-block"><i class="fa fa-pencil-square-o pr-1" aria-hidden="true"></i>Editar Perfil</a>
+            <div class="profile-container">
+                <div class="container text-center">
+                    <h4 align="center"><i class="fa fa-user-circle-o fa-3x mr-2 mb-2"aria-hidden="true"></i><br>{{user.username}}</h2>
+                    
                 </div>
-                <div class="col-12 mb-2">
-                    <a href="{% url 'change-password' %}" class="btn btn-outline-primary btn-block"><i class="fa fa-pencil-square-o pr-1" aria-hidden="true"></i>Cambiar Contraseña</a>
+                <div class="container text-center ">
+                    <h6 align="center">Por favor completa tu perfil de cuidador</h6>
+                    <a href="{% url 'registrar_perfil_cuidador' %}" class="btn btn-outline-primary">Completar Perfil</a>
                 </div>
-                <div class="col-6 pr-1">
-                    <a href="{% url 'test_npi' %}" class="btn btn-outline-primary btn-block">Realizar Test NPI</a>
-                </div>
-                <div class="col-6 pl-1">
-                    <a href="{% url 'test_zarit' %}" class="btn btn-outline-primary btn-block">Realizar Test Zarit</a>
-                </div>
+                
             </div>
+                
+        {% else %}
+        <div class="profile-container">
+                <div class="container text-center mx-auto"style="width: 70%;">
+                    <div class="col-12 mb-5">
+                        <h4 align="center"><i class="fa fa-user-circle-o fa-3x mr-2 mb-2"aria-hidden="true"></i><br>{{user.username}}</h2>
+
+                    </div>
+                    <div class="col-12 mb-2">
+                        <a href="{% url 'editar_perfil_cuidador' cuidador.pk %}" class="btn btn-outline-primary btn-sm"><i class="fa fa-pencil-square-o pr-1" aria-hidden="true"></i>Editar Perfil</a>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <a href="{% url 'change-password' %}" class="btn btn-outline-primary btn-sm"><i class="fa fa-pencil-square-o pr-1" aria-hidden="true"></i>Cambiar Contraseña</a>
+                    </div>
+                </div>
+                <div class="container mx-auto">
+                    <p><b>Nombre:</b> {{user.first_name}} {{user.last_name}}</p>
+                    <hr>
+                    <p><b>Edad:</b> {{cuidador.edad}} años</p>
+                    <hr>
+                    <p><b>Estado Civil:</b> {{cuidador.estado_civil}}(a)</p>
+                    <hr>
+                    <p><b>Tipo:</b> {{cuidador.tipo}}</p>
+                    <hr>
+                    <p><b>Relación Paciente:</b> {{cuidador.relacion_paciente}}(a)</p>
+                    <hr>
+                    <p><b>Inicio Cuidados:</b> {{cuidador.fecha_cuidado}}</p>
+                    <hr>
+                </div>
+        </div>
+
+        
         {% endif %}
-            <hr>
+            
     </div>
     {% if cuidador %}
-    <div class="col-sm-7 mx-auto">
-        <h3><i class="fa fa-history" aria-hidden="true"></i> Test realizados</h3>
-        <table id="tablaTest" class="table table-sm">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Fecha</th>
-                <!--<th scope="col"></th>-->
-            </tr>
-            </thead>
-            <tbody>
-                {% for t in test %}
-                <tr>
-                    <th scope="row">{{forloop.counter}}</th>
-                    <td><span class="badge badge-info">{{t.tipo_test}}</span></td>
-                    <td>{{t.fecha}}</td>
-                    <!--<td><a href="#" class="btn btn-outline-info btn-sm btn-block">Ver</a></td>-->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <script>
-            $(document).ready(function(){
-                $('#tablaTest').DataTable({
-                    "responsive": true,
-                    "bAutoWidth": false,
-                    "aLengthMenu": [[5,10, 25, 50, 100, -1], [5,10, 25, 50, 100, "Todos"]],
-                    "iDisplayLength": 5,
-                    "language": {   // Cambiode lenguaje a español
-                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                        "sLengthMenu": "Mostrar _MENU_  registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sSearch": "Buscar:",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
-              });
-        </script>
-    </div>
+      
+        <div class="col-md-4">
+            <div style="background-color:rgb(219, 224, 230)" class="card container-card mb-1">
+                <a href="{% url 'info_test' %}" class="stretched-link">
+                </a>
+                <div  class="centered"><i class="fa fa-history" aria-hidden="true"></i> TEST REALIZADOS</div>
+            </div>
+            <div style="background-color: rgb(245, 231, 205);" class="card container-card ">
+                <a href="{% url 'info_paciente' %}" class="stretched-link">
+                </a>
+                <div class="centered">PACIENTE</div>
+            </div>
+        </div>
     {% endif %}
+   
 </div>
-
+<hr>
 {% endblock  %}

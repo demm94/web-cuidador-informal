@@ -13,8 +13,8 @@
 <form class="form-inline mb-3" method="get" action="{% url 'topicos' %}">
     <div class="input-group">
       <div class="input-group-prepend mr-2">
-        <span class="text-center ml-1 centered"><i class="fa fa-filter mr-1"></i></span>
-        <span class="text-center ml-1 centered">Tópico: </span>
+        <span class="text-center ml-1 " style="display: flex; align-items: center; text-align: center;"><i class="fa fa-filter mr-1"></i></span>
+        <span class="text-center ml-1 " style="display: flex; align-items: center; text-align: center;">Tópico: </span>
       </div>
       <select class="form-control mr-2" name="filtro_topico" onchange="this.form.submit()">
         <option value="">Todos</option>

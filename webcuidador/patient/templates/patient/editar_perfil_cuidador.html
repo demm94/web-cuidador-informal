@@ -2,14 +2,43 @@
 
 {% block title %}Registrar Cuidador{% endblock %}
 {% block content %}
-<h2 align="center">Edición de perfil</h2>
 <div class="row">
     <div class="col-md-8 mx-auto">
         <form action="{% url 'editar_perfil_cuidador' form_instance.pk %}" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <!--<input type="submit" value="Submit">-->
-            <button type="submit" class="btn btn-primary btn-block">Editar</button>
+            <h2 align="center">Edición de perfil</h2>
+            <p class="text-center">Aquí puede actualizar los datos de su perfil</p>
+
+            <div class="form-container2">
+
+                <div class="input-group">
+                  <div class="form-group col-4" title="{{ form.edad.errors|striptags }}" data-toggle="tooltip_error" >
+                    <label style="color:white" for="{{ form.edad.id_for_label }}">Edad:</label>
+                    {{ form.edad }}
+                  </div>
+                  <div class="form-group col-4" title="{{ form.estado_civil.errors|striptags }}" data-toggle="tooltip_error">
+                    <label style="color:white" for="{{ form.estado_civil.id_for_label }}">Estado Civil:</label>
+                    {{ form.estado_civil }}
+                  </div>
+                  <div class="form-group col-4" title="{{ form.fecha_cuidado.errors|striptags }}" data-toggle="tooltip_error" >
+                    <label style="color:white" for="{{ form.fecha_cuidado.id_for_label }}">Inicio de cuidados:</label>
+                    {{ form.fecha_cuidado }}
+                  </div>
+                </div>
+    
+                <div class="input-group">
+                  <div class="form-group col-6" title="{{ form.tipo.errors|striptags }}" data-toggle="tooltip_error" style="max-width: 50%;" >
+                    <label style="color:white" for="{{ form.tipo.id_for_label }}">Tipo de Cuidador:</label>
+                    {{ form.tipo }}
+                  </div>
+                  <div class="form-group col-6" title="{{ form.relacion_paciente.errors|striptags }}" data-toggle="tooltip_error" style="max-width: 50%;">
+                    <label style="color:white" for="{{ form.relacion_paciente.id_for_label }}">Relación con paciente:</label>
+                    {{ form.relacion_paciente }}
+                  </div>
+                </div>  
+                <p style="width: 70%; margin: 0 auto;" ><input type="submit" class="btn btn-primary btn-block" value="Confirmar"></p>         
+                
+              </div>
         </form>
     </div>
 </div>

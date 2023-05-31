@@ -1,0 +1,126 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Paciente{% endblock %}
+{% block content %}
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+<div class="row">
+  <div class="col-sm-4">
+    
+    {% if 'edit' in request.GET %}
+      <div class="alert alert-success" role="alert">
+        Perfil editado correctamente!.
+      </div>
+    {% elif 'create' in request.GET %}
+      <div class="alert alert-success" role="alert">
+        Perfil completado correctamente!.
+      </div>
+    {% endif %}
+    <div class="profile-patient-container">
+      <div class="container text-center mx-auto"style="width: 70%;">
+          <div class="col-12 ">
+              <h4 align="center"><i class="fa fa-user-circle-o fa-3x mr-2"aria-hidden="true"></i><br>{{paciente.nombres}}</h2>
+          </div>
+          
+      </div>
+      <div class="container mx-auto">
+          <p><b>Nombre:</b> {{paciente.nombres}} {{paciente.apellidos}}</p>
+          <hr>
+          <p><b>Edad:</b> {{paciente.edad}} años</p>
+          <hr>
+          <p><b>Fecha de nacimiento:</b> {{paciente.fecha_de_nacimiento}}</p>
+          <hr>
+          <p><b>Sexo:</b> {{paciente.sexo}}</p>
+          <hr>
+          <p><b>Enfermedades crónicas:</b> {{paciente.enfermedades}}</p>
+          <hr>
+      </div>
+      <div class="col-12 mb-2 text-center">
+        <a  href="{% url 'editar_perfil_paciente' paciente.pk %}" class="btn btn-outline-primary btn-sm"><i class="fa fa-pencil-square-o pr-1" aria-hidden="true"></i>Editar Paciente</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-8 mt-2">
+    <div class="mb-2" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;">
+      <a class="btn btn-success" data-toggle="modal" data-target="#formularioModal"><i class="fa fa-plus" aria-hidden="true"></i>
+          Añadir Evento
+          <i class="fa fa-question-circle" aria-hidden="true" tabindex="0" data-toggle="popover" data-trigger="hover" data-html="true" title="Evento(s)"
+          data-content="Evento se refiere a un sintoma anormal o conducta poco habitual a considerar del paciente."></i>
+      </a>             
+    </div>
+    <table id="tablaTest" class="table table-sm">
+      <thead>
+      <tr>
+          <th scope="col">#</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Baño</th>
+          <th scope="col">Alimentación</th>
+          <th scope="col">Sueño</th>
+          <th scope="col">Ánimo</th>
+          <th scope="col"></th>
+
+          <!--<th scope="col"></th>-->
+      </tr>
+      </thead>
+      <tbody>
+          {% for e in eventos %}
+          <tr>
+              <th >{{forloop.counter}}</th>
+              <td>{{e.fecha}}</td>
+              <td>{% if e.f_baño %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle-fill text-danger"></i>{% endif %}</td>
+              <td>{% if e.f_alimentacion %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle-fill text-danger"></i>{% endif %}</td>
+              <td>{% if e.f_sueño %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle-fill text-danger"></i>{% endif %}</td>
+              <td>{% if e.animo %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle-fill text-danger"></i>{% endif %}</td>
+              <td>
+                <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#verModal" data-evento-id="{{ e.id }}" data-fecha="{{ e.fecha }}" data-f-baño="{{ e.f_baño }}" data-f-alimentacion="{{ e.f_alimentacion }}" data-f-sueño="{{ e.f_sueño }}" data-animo="{{ e.animo }}" data-otro="{{e.comentario}}">
+                  <i class="fa fa-eye mr-1" aria-hidden="true"></i>  
+                  Ver
+                </a>
+            </td>
+              <!--<td><a href="#" class="btn btn-outline-info btn-sm btn-block">Ver</a></td>-->
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    <div id="verModal" class="modal" tabindex="-1" aria-labelledby="formularioModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Detalles</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Fecha: <span id="modal-fecha"></span></p>
+            <p>Frecuencia de baño: <span id="modal-f-baño"></span></p>
+            <p>Frecuencia de alimentación: <span id="modal-f-alimentacion"></span></p>
+            <p>Horas de sueño: <span id="modal-f-sueño"></span></p>
+            <p>Estado de ánimo: <span id="modal-animo"></span></p>
+            <p>Otro: <span id="modal-otro"></span></p>
+          </div>        
+        </div>
+      </div>
+    </div>
+    <div id="formularioModal" class="modal" tabindex="-1" aria-labelledby="formularioModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Añadir Evento</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+            <!-- Contenido del modal -->
+          {% include 'formularioModal.html' with form=form %}
+          </div>        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

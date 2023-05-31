@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'content.apps.ContentConfig',
     'patient.apps.PatientConfig',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [

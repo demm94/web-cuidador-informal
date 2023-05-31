@@ -1,0 +1,29 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Test realizados{% endblock %}
+{% block content %}
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+<h2 align="center" class="mb-4"><i class="fa fa-history" aria-hidden="true"></i> Test Realizados</h2>
+
+  <table id="tablaTest" class="table table-sm">
+      <thead>
+      <tr>
+          <th scope="col">#</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Fecha</th>
+          <!--<th scope="col"></th>-->
+      </tr>
+      </thead>
+      <tbody>
+          {% for t in test %}
+          <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td><span class="badge badge-info">{{t.tipo_test}}</span></td>
+              <td>{{t.fecha}}</td>
+              <!--<td><a href="#" class="btn btn-outline-info btn-sm btn-block">Ver</a></td>-->
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+{% endblock %}
