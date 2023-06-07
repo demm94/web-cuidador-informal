@@ -1,17 +1,40 @@
 from django import forms
-from .models import Paciente, Historial, Sintoma, RespuestaNPI, RespuestaZarit, Cuidador
+from .models import Evento, Paciente, Historial, Sintoma, RespuestaNPI, RespuestaZarit, Cuidador
 
 class PacienteForm(forms.ModelForm):
     class Meta:
+       
         model =  Paciente
-        fields =  ['nombres', 'apellidos', 'edad', 'estado_civil']
+        fields =  ['nombres', 'apellidos', 'edad', 'fecha_de_nacimiento','sexo','enfermedades']
         # Agregar estilos al formulario 
+        SEXO_CHOICES = (
+             ('None', 'None'),
+            ('Femenino', 'Femenino'),
+            ('Masculino', 'Masculino'),
+           
+        )
         widgets = { 
-            'nombres': forms.TextInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Nombre de paciente'}),
-            'apellidos': forms.TextInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Nombre de paciente'}),
+            'nombres': forms.TextInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Nombres del paciente'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Apellidos del paciente'}),
             'edad': forms.NumberInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Edad'}),
-            'estado_civil': forms.Select(attrs={'class': 'form-control mb-2'}),
+            'fecha_de_nacimiento': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control mb-2', 'type': 'date'}),
+            'sexo': forms.Select(choices=SEXO_CHOICES, attrs={'class': 'form-control mb-2'}),
+            'enfermedades': forms.TextInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Enfermedades Crónicas'}),
         }   
+
+class RegistroEventoForm(forms.ModelForm):
+    class Meta:
+        model = Evento
+        fields = ['fecha','f_baño', 'f_alimentacion', 'f_sueño', 'animo','comentario']
+
+        widgets = {
+            'fecha': forms.DateInput(format=('%Y-%m-%d'), attrs={'class': 'form-control mb-2', 'type': 'date'}),
+            'f_baño': forms.NumberInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Frecuencia de baño'}),
+            'f_alimentacion': forms.NumberInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Frecuencia de alimentación'}),
+            'f_sueño': forms.NumberInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Horas de sueño'}),
+            'animo': forms.NumberInput(attrs={'type':'range', 'class': 'form-range', 'min': '1', 'max': '10'}),
+            'comentario': forms.TextInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Otro sintoma inusual o caida'}),
+        }
 
 class RegistroSintomaForm(forms.ModelForm):
     sintomas = forms.ModelMultipleChoiceField(
@@ -26,6 +49,7 @@ class RegistroSintomaForm(forms.ModelForm):
         widgets = { 
             'sintomas': forms.SelectMultiple(attrs={'class': 'form-control mb-2'}),
             'comentario': forms.Textarea(attrs={'class': 'form-control mb-2', 'placeholder': 'Ingresa un comentario'}),
+            
         }
 
 class TestNPIForm(forms.ModelForm):

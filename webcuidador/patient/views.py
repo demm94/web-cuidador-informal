@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Paciente, Historial, Test, TipoTest, Cuidador
-from .forms import PacienteForm, RegistroSintomaForm, TestNPIForm, TestZaritForm, RespuestaZarit, RespuestaNPI, CuidadorForm
+from .models import Evento, Paciente, Historial, Test, TipoTest, Cuidador
+from .forms import RegistroEventoForm, PacienteForm, RegistroSintomaForm, TestNPIForm, TestZaritForm, RespuestaZarit, RespuestaNPI, CuidadorForm
 from django.urls import reverse_lazy
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test
@@ -19,14 +19,40 @@ def check_cuidador(request):
 @login_required # info_cuidador requiere que el cuidador esté logeado en el sistema
 @user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL) 
 def info_cuidador(request):
-    test = Test.objects.filter(cuidador=request.user)
     try:
         cuidador = Cuidador.objects.get(user=request.user)
+        
     except Cuidador.DoesNotExist:
         cuidador = None
-    return render(request, 'patient/info_cuidador.html', {'cuidador': cuidador, 'test': test})
+    return render(request, 'patient/info_cuidador.html', {'cuidador': cuidador})
+
+@login_required # info_cuidador requiere que el cuidador esté logeado en el sistema
+@user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL) 
+def info_test(request):
+    test = Test.objects.filter(cuidador=request.user)
+
+    return render(request,'patient/info_test.html', {'test': test})
+
+@login_required # info_cuidador requiere que el cuidador esté logeado en el sistema
+@user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL) 
+def info_paciente(request):
+    try:
+        paciente = Paciente.objects.get(user = request.user)
+        eventos = Evento.objects.filter(user=request.user)
+        form = RegistroEventoForm(request.POST)
+
+    except Paciente.DoesNotExist:
+        paciente = None
+
+    if paciente:
+        return render(request,'patient/info_paciente.html',{'paciente': paciente,'eventos': eventos,'form': form})
+    else:
+        return redirect(reverse_lazy('registrar_paciente'))
+
+
 
 @login_required # registrar_paciente requiere que el cuidador esté logeado en el sistema
+@user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL) 
 def registrar_paciente(request):
     paciente = Paciente.objects.filter(user=request.user) 
     if not paciente:    #Evita que se vuelva a registrar un paciente si ya hay uno registrado, redireccionando a "Mi paciente"
@@ -42,8 +68,46 @@ def registrar_paciente(request):
             return render(request, 'patient/registrar_paciente.html', {'form': form})
     else:
         return redirect(reverse_lazy('info_cuidador'))
+    
+@login_required 
+@user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL)
+def editar_perfil_paciente(request, id_paciente):
+    paciente = Paciente.objects.get(user=request.user) 
+    #Evita que se vuelva a ingresar el perfil del cuidador si ya hay uno registrado, redireccionando a "Mi paciente"
+    #además evita ingresar a editar otro "cuidador" desde la URL 
+    if paciente and id_paciente==paciente.id:    
+        if request.method == 'POST':
+            form_instance = Paciente.objects.get(pk=id_paciente)
+            form = PacienteForm(request.POST, instance=form_instance)
+            if form.is_valid():
+                print("Valido")
+                form.save()
+                return redirect(reverse_lazy('info_paciente') + '?edit')
+        else:
+            # Mostrar datos de perfil ya creado en el formulario
+            form_instance = Paciente.objects.get(pk=id_paciente)
+            form = PacienteForm(instance=form_instance)
+            return render(request, 'patient/editar_perfil_paciente.html', {'form': form, 'form_instance': form_instance})
+    else:
+        print("No valido")
+        return redirect(reverse_lazy('info_paciente'))
+@login_required
+@user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL)
+def registrar_evento(request):
+    if request.method == 'POST':
+        form = RegistroEventoForm(request.POST)
+        if form.is_valid():
+            evento = form.save(commit=False)
+            evento.user = request.user
+            evento.save()
+            return redirect(reverse_lazy('info_paciente'))
+    else:
+        form = RegistroEventoForm()
+        return render(request, 'patient/registrar_evento.html', {'form': form})
+
 
 @login_required
+@user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL)
 def registrar_sintoma(request):
     if request.method == 'POST':
         form = RegistroSintomaForm(request.POST)
@@ -143,8 +207,10 @@ def registrar_perfil_cuidador(request):
 @login_required # registrar perfil de cuidador requiere que el cuidador esté logeado en el sistema
 @user_passes_test(check_cuidador, settings.LOGIN_REDIRECT_URL)
 def editar_perfil_cuidador(request, id_cuidador):
-    cuidador = Cuidador.objects.filter(user=request.user) 
-    if cuidador:    #Evita que se vuelva a ingresar el perfil del cuidador si ya hay uno registrado, redireccionando a "Mi paciente"
+    cuidador = Cuidador.objects.get(user=request.user) 
+    #Evita que se vuelva a ingresar el perfil del cuidador si ya hay uno registrado, redireccionando a "Mi paciente"
+    #además evita ingresar a editar otro "cuidador" desde la URL 
+    if cuidador and id_cuidador==cuidador.id:    
         if request.method == 'POST':
             form_instance = Cuidador.objects.get(pk=id_cuidador)
             form = CuidadorForm(request.POST, instance=form_instance)

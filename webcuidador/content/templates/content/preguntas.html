@@ -1,0 +1,211 @@
+{% extends "core/base.html" %} 
+{% load static %}
+{% block title %}Preguntas{% endblock %} 
+{% block content %}
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
+{% if user.is_cuidador %}
+    <form class=" my-lg-0" method="GET">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar" name="buscar" value="{{request.GET.buscar}}">
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </div>
+        </div>
+    </form>
+    <div class="column">
+        <div style="display: flex;justify-content: flex-end;">
+                        
+        </div>
+    
+    </div>
+    <form method="GET" action="{% url 'preguntas' %}">
+        <!-- Otros campos de búsqueda existentes -->
+        <div class="row d-flex justify-content-center align-items-center">
+            
+            <h3><i class="bi bi-filter-left mr-2"></i></h3>
+           
+            <div class="col-sm-3">    
+                <div class="pull-right d-flex" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%;">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar d-flex align-items-center"></i>&nbsp;
+                    <input type="text" style="width:100%; border: #ccc;" id="rango_fechas" name="rango_fechas" >
+                </div>
+            </div>
+            <div class="col-sm-4 ">
+                <label for="estado_respuesta">Estado de respuesta:</label>
+                <select id="estado_respuesta" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; " name="estado_respuesta" onchange="this.form.submit()">
+                    <option value="" {% if not request.GET.estado_respuesta %}selected{% endif %}>Todos</option>
+                    <option value="respondida" {% if request.GET.estado_respuesta == 'respondida' %}selected{% endif %}>Respondida</option>
+                    <option value="no_respondida" {% if request.GET.estado_respuesta == 'no_respondida' %}selected{% endif %}>No respondida</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary" type="submit">Filtrar</button>
+            </div>
+
+            <div class="col-sm-2">
+                <a class="btn btn-success" data-toggle="modal" data-target="#preguntaModal"><i class="fa fa-plus" aria-hidden="true"></i>
+                    Añadir Pregunta
+                </a>
+
+            </div>
+            
+        </div>
+        
+    </form>
+    {% for pregunta in preguntas %}
+        <div style="padding: 1%;">
+            <p><strong style="font-size: x-large;">{{ pregunta.pregunta }}</strong></p>
+            {% if pregunta.respuesta %}
+                {% if pregunta.respuesta|length > 200 %}
+                <p style="font-size: larger;">{{ pregunta.respuesta|slice:":200" }}... <a href="#" data-toggle="modal" data-target="#modal-{{ pregunta.id }}">ver más</a></p>
+                {% else %}
+                <p style="font-size: larger;">{{ pregunta.respuesta }}</p>
+                {% endif %}
+                <p style="font-style: italic;font-weight: bold;">Respondido por: {{ pregunta.user_responde.username }}</p>
+            {% endif %}
+            <p style="font-style: italic; ">Fecha: {{pregunta.fecha_creacion}}</p>
+        </div>
+        <hr>
+        <!-- Modal para ver la respuesta completa -->
+        <div class="modal fade" id="modal-{{ pregunta.id }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Respuesta completa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ pregunta.respuesta }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <!-- Modal -->
+    <div class="modal fade" id="preguntaModal" tabindex="-1" role="dialog" aria-labelledby="preguntaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="preguntaModalLabel">Crear una pregunta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'preguntas' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Guardar pregunta</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% if user.is_medico %}
+    <h2 id="titulo-medico" >Cuidador:  
+        <small class="text-muted"> {{cuidador.user.first_name}} {{cuidador.user.last_name}}</small>
+    </h2>
+    <br>
+    <form class=" my-lg-0" method="GET">
+        <div class="input-group mb-3" >
+            <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar" name="buscar" value="{{request.GET.buscar}}">
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+            </div>
+        </div>
+    </form>
+    <form method="GET" action="{% url 'preguntas' %}">
+        <!-- Otros campos de búsqueda existentes -->
+        <div class="row d-flex justify-content-center align-items-center">
+            
+            <h3><i class="bi bi-filter-left mr-2"></i></h3>
+           
+            <div class="col-sm-3">    
+                <div class="pull-right d-flex" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%;">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar d-flex align-items-center"></i>&nbsp;
+                    <input type="text" style="width:100%; border: #ccc;" id="rango_fechas" name="rango_fechas" >
+                </div>
+            </div>
+            <div class="col-sm-4 ">
+                <label for="estado_respuesta">Estado de respuesta:</label>
+                <select id="estado_respuesta" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; " name="estado_respuesta" onchange="this.form.submit()">
+                    <option value="" {% if not request.GET.estado_respuesta %}selected{% endif %}>Todos</option>
+                    <option value="respondida" {% if request.GET.estado_respuesta == 'respondida' %}selected{% endif %}>Respondida</option>
+                    <option value="no_respondida" {% if request.GET.estado_respuesta == 'no_respondida' %}selected{% endif %}>No respondida</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Filtrar</button>
+
+        </div>
+        
+    </form>
+    {% for pregunta in preguntas %}
+        <div style="padding: 1%;">
+            <p><strong style="font-size: x-large;">{{ pregunta.pregunta }}</strong></p>
+            {% if pregunta.respuesta %}
+                {% if pregunta.respuesta|length > 200 %}
+                <p style="font-size: larger;">{{ pregunta.respuesta|slice:":200" }}... <a href="#" data-toggle="modal" data-target="#modal-{{ pregunta.id }}">ver más</a></p>
+                {% else %}
+                    <p style="font-size: larger;">{{ pregunta.respuesta }}</p>
+                {% endif %}
+            {% else %}
+            <div style="display: flex;justify-content: center;">
+                <a class="btn btn-primary" value="{{ pregunta.id }}"data-toggle="modal" data-target="#responderModal-{{ pregunta.id }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+
+                    Responder
+                </a>             
+            </div>
+            {% endif %}
+            <p style="font-style: italic;">Fecha: {{pregunta.fecha_creacion}}</p>
+
+        </div>
+        <hr>
+        <!-- Modal para ver la respuesta completa -->
+        <div class="modal fade" id="modal-{{ pregunta.id }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel">Respuesta completa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ pregunta.respuesta }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Para Responder-->
+        <div class="modal fade" id="responderModal-{{ pregunta.id }}" tabindex="-1" role="dialog" aria-labelledby="responderModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="responderModalLabel">Responder pregunta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'responder_pregunta'  pregunta.id  %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Guardar respuesta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    {% endfor %}
+    {% include 'pagination.html' with items=preguntas %}
+
+{% endif%}
+
+{% endblock %}

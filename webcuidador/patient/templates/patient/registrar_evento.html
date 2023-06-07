@@ -1,0 +1,94 @@
+{% extends "core/base.html" %}
+
+{% block title %}Registrar evento{% endblock %}
+{% block content %}
+<h2 align="center">Ingrese los datos del paciente</h2>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <form action="{% url 'registrar_evento' %}" method="post" onsubmit="return validarFormulario()">
+            {% csrf_token %}
+            <!-- Pregunta 1 -->
+            <div class="row" style="align-items: center; display: flex;">
+              <div class="col-6">
+                <p>¿La frecuencia con la que asiste al baño es afectada?</p>
+              </div>
+              <div class="col-2">
+                <input type="radio" name="frecuencia_baño_afectada" value="si" onchange="toggleCampo('f_baño', this)"> Sí
+                <input type="radio" name="frecuencia_baño_afectada" value="no" onchange="toggleCampo('f_baño', this)"> No
+              </div>
+              <div class="col-4">
+                <label for="{{ form.f_baño.id_for_label }}">Frecuencia:</label>
+                <input type="number" class="form-control mb-2" name="f_baño" placeholder="Inserte la frecuencia" readonly>
+              </div>
+            </div>
+            <hr>
+            <!-- Pregunta 2 -->
+            <div class="row" style="align-items: center; display: flex;">
+              <div class="col-6">
+                <p>¿La frecuencia de alimentación es afectada?</p>
+              </div>
+              <div class="col-2">
+                <input type="radio" name="frecuencia_alimentacion_afectada" value="si" onchange="toggleCampo('f_alimentacion', this)"> Sí
+                <input type="radio" name="frecuencia_alimentacion_afectada" value="no" onchange="toggleCampo('f_alimentacion', this)"> No    
+              </div>
+              <div class="col-4">
+                <label for="{{ form.f_alimentacion.id_for_label }}">Frecuencia:</label>
+                <input type="number" class="form-control mb-2" name="f_alimentacion" placeholder="Inserte la frecuencia" readonly>
+              </div>
+
+            </div>
+            <hr>
+            
+            <!-- Pregunta 3 -->
+            <div class="row" style="align-items: center; display: flex;">
+              <div class="col-6">
+                <p>¿Las horas de sueño es afectada?</p>
+              </div>
+              <div class="col-2">
+                <input type="radio" name="horas_sueño_afectadas" value="si" onchange="toggleCampo('f_sueño', this)"> Sí
+                <input type="radio" name="horas_sueño_afectadas" value="no" onchange="toggleCampo('f_sueño', this)"> No
+              </div>
+              <div class="col-4">
+                <label for="{{ form.f_sueño.id_for_label }}">Horas:</label>
+                <input type="number" class="form-control mb-2" name="f_sueño" placeholder="Horas de sueño" readonly>
+              </div>
+
+            </div>
+            <hr>
+            <!-- Pregunta 4 -->
+            <div class="row" style="align-items: center; display: flex;">
+              <div class="col-6">
+                <p>¿El estado de ánimo es afectado?</p>
+              </div>
+              <div class="col-2">
+                <input type="radio" name="estado_animo_afectado" value="si" onchange="toggleCampo('animo', this)"> Sí
+                <input type="radio" name="estado_animo_afectado" value="no" onchange="toggleCampo('animo', this)"> No
+              </div>
+              <div class="col-4">
+                <label for="{{ form.animo.id_for_label }}">Ánimo (1-10):</label>
+                <input type="range" class="form-range mb-2" name="animo" min="1" max="10" value="5" disabled>
+              </div>
+
+            </div>
+            <hr>
+            <!-- Resto de los campos -->
+            <div class="input-group">
+              <div class="col-3">
+                <label  for="{{ form.fecha.id_for_label }}">Fecha:</label>
+                {{ form.fecha }}
+              </div>
+              <div class="col-9">
+                <label  for="{{ form.comentario.id_for_label }}">Otros:</label>
+                {{ form.comentario }}
+              </div>
+
+            </div>
+            
+
+            
+            <!--<input type="submit" value="Submit">-->
+            <button type="submit" class="btn btn-primary mx-auto">Registrar</button>
+        </form>
+    </div>
+</div>
+{% endblock  %}

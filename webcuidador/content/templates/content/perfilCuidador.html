@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Perfil Cuidador{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-sm-6">
+    
+    <div class="profile-container mb-2">
+      <div class="container text-center mx-auto"style="width: 40%;">
+          <div class="col-12">
+              <h4 align="center"><i class="fa fa-user-circle-o fa-3x "aria-hidden="true"></i><br>{{cuidador.user.username}}</h2>
+  
+          </div>
+      </div>
+      <div class="container mx-auto">
+          <p><b>Nombre:</b> {{cuidador.user.first_name}} {{cuidador.user.last_name}}</p>
+          <hr>
+          <p><b>Edad:</b> {{cuidador.edad}} años</p>
+          <hr>
+          <p><b>Estado Civil:</b> {{cuidador.estado_civil}}(a)</p>
+          <hr>
+          <p><b>Tipo:</b> {{cuidador.tipo}}</p>
+          <hr>
+          <p><b>Relación Paciente:</b> {{cuidador.relacion_paciente}}(a)</p>
+          <hr>
+          <p><b>Inicio Cuidados:</b> {{cuidador.fecha_cuidado}}</p>
+          <hr>
+      </div>
+    </div>
+
+  </div>
+    <div class="col-sm-3 align-items-center justify-content-center">
+      <div style="background-color:#467061;" class="card container-card mb-1">
+          <a href="#" class="stretched-link">
+          </a>
+          <div  class="centered" style="color: white;">INFORME GRÁFICO</div>
+      </div>
+      <div style="background-color:#7f8e92;" class="card container-card mb-1">
+        <a href="{% url 'test_cuidador' %}" class="stretched-link">
+        </a>
+        <div  class="centered" style="color: white;">TEST REALIZADOS</div>
+    </div>
+    </div>
+    <div class="col-sm-3">
+  
+      <div style="background-color: #54AF8E;" class="card container-card ">
+          <a href="{% url 'preguntas' %}" class="stretched-link">
+          </a>
+          <div class="centered "style="color: white;">PREGUNTAS</div>
+      </div>
+    </div>
+
+
+  
+  
+</div>
+<div class="row">
+
+
+</div>
+
+{% endblock %}

@@ -1,7 +1,9 @@
 {% extends "core/base.html" %}
-
+{% load static %}
 {% block title %}Home{% endblock %}
 {% block content %}
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
     <style>
     @media only screen and (max-width: 600px) {
         #titulo-medico {
@@ -16,18 +18,28 @@
              <small class="text-muted">{{user.first_name}} {{user.last_name}}!</small>
         </h2>
         <blockquote class="blockquote">
-            <p class="mb-0" style="font-size: 1rem;">A continuación puedes ver la lista de todos los cuidadores de la plataforma.</p>
-          </blockquote>
+            <p class="mb-0" style="font-size: 1rem;">A continuación puedes ver la lista de los cuidadores asociados.</p>
+            
+        </blockquote>
+        <div style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;">
+            <a class="btn btn-success" href="{% url 'agregar_cuidador' %}">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar Cuidador
+            </a>     
+                    
+        </div>
             <table id="tablaCuidadoresMedico" class="table">
+                
+                
                 <thead>
+                    
                 <tr>
                     <th scope="col">Nombre Cuidador</th>
                     <th scope="col">Edad</th>
-                    <th scope="col">Estado civil</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Relación paciente</th>
                     <th scope="col">Inicio cuidados</th>
-                    <th scope="col">Tests</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                     <!--<th scope="col">Síntomas</th>-->
                 </tr>
                 </thead>
@@ -36,45 +48,44 @@
                     <tr>
                         <th scope="row">{{cuidador.user.first_name}} {{cuidador.user.last_name}}</th>
                         <td>{{cuidador.edad}} años</td>
-                        <td>{{cuidador.estado_civil}}(a)</td>
                         <td><span class="badge badge-info">{{cuidador.tipo}}</span></td>
                         <td>{{cuidador.relacion_paciente}}(a)</td>
                         <td>{{cuidador.fecha_cuidado}}</td>
-                        <td><a href="{% url 'test_cuidador' cuidador.user.id %}" class="btn btn-info btn-sm">
-                            <i class="fa fa-info-circle mr-1" aria-hidden="true"></i>Detalles</a></td>
+                        <td><a href="{% url 'perfil_cuidador' cuidador.user.id %}" class="btn btn-info btn-sm">
+                            <i class="fa fa-info-circle " aria-hidden="true"></i> Detalles</a></td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmModal{{ cuidador.id }}">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                            
+                            <!-- Modal de confirmación -->
+                            <div class="modal fade" id="confirmModal{{ cuidador.id }}" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel{{ cuidador.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="confirmModalLabel{{ cuidador.id }}">Confirmación de eliminación</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>¿Estás seguro de que deseas eliminar al cuidador <b>{{ cuidador.user.first_name }} {{ cuidador.user.last_name }}</b>?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <form action="{% url 'eliminar_cuidador' cuidador.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-          <script>
-              $(document).ready(function(){
-                $('#tablaCuidadoresMedico').DataTable({
-                    "responsive": true,
-                    "bAutoWidth": false,
-                    "aLengthMenu": [[5,10, 25, 50, 100, -1], [5,10, 25, 50, 100, "Todos"]],
-                    "iDisplayLength": 5,
-                    "language": {   // Cambiode lenguaje a español
-                        "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                        "sLengthMenu": "Mostrar _MENU_  registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sSearch": "Buscar:",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
-              });
-          </script>
     {% else %}
         {% if 'profile_error' in request.GET %}
         <div class="alert alert-warning" role="alert">

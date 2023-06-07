@@ -1,0 +1,52 @@
+{% extends "core/base.html" %}
+
+{% block title %}Editar Paciente{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <form action="{% url 'editar_perfil_paciente' form_instance.pk %}" method="post">
+            {% csrf_token %}
+            <h2 align="center">Edición de Paciente</h2>
+            <p class="text-center">Aquí puede actualizar los datos del paciente</p>
+
+            <div class="form-container2">
+              <div class="input-group">
+                  <div class="form-group col-6 " title="{{ form.nombres.errors|striptags }}" data-toggle="tooltip_error" >
+                      <label style="color:white" for="{{ form.nombres.id_for_label }}">Nombres:</label>
+                      {{ form.nombres }}
+                  </div>
+                  <div class="form-group col-6" title="{{ form.apellidos.errors|striptags }}" data-toggle="tooltip_error" >
+                      <label style="color:white" for="{{ form.apellidos.id_for_label }}">Apellidos:</label>
+                      {{ form.apellidos }}
+                  </div>
+                 
+              </div>
+              <div class="input-group">
+                  <div class="form-group col-4 " title="{{ form.fecha_de_nacimiento.errors|striptags }}" data-toggle="tooltip_error" >
+                      <label style="color:white" for="{{ form.fecha_de_nacimiento.id_for_label }}">Fecha de Nacimiento:</label>
+                      {{ form.fecha_de_nacimiento }}
+                  </div>
+                  <div class="form-group col-4 " title="{{ form.sexo.errors|striptags }}" data-toggle="tooltip_error" >
+                      <label style="color:white" for="{{ form.sexo.id_for_label }}">Sexo:</label>
+                      {{ form.sexo }}
+                  </div>
+                  <div class="form-group col-4" title="{{ form.edad.errors|striptags }}" data-toggle="tooltip_error" >
+                      <label style="color:white" for="{{ form.edad.id_for_label }}">Edad:</label>
+                      {{ form.edad }}
+                  </div>
+              </div>
+              <div class="input-group">
+                  <div class="form-group col-12 " title="{{ form.enfermedades.errors|striptags }}" data-toggle="tooltip_error" >
+                      <label style="color:white" for="{{ form.enfermedades.id_for_label }}">Enfermedades:</label>
+                      {{ form.enfermedades }}
+                  </div>
+
+              </div> 
+              <p style="width: 70%; margin: 0 auto;" ><input type="submit" class="btn btn-primary btn-block" value="Confirmar"></p>         
+
+          </div>
+        </form>
+    </div>
+</div>
+{% endblock  %}

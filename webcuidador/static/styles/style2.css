@@ -68,7 +68,29 @@
 .form-container a {
   color: #0095f6;
 }
-
+.profile-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px 30px;  
+  border: 1px solid #5C5E61;
+  border-radius: 50px;
+}
+.profile-patient-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 30px;  
+  border: 1px solid #5C5E61;
+  border-radius: 50px;
+  gap: 29px;
+}
+@media screen and (max-width: 768px) {
+  .profile-container {
+    flex-direction: column; /* Cambiar a dirección vertical */
+    align-items: flex-start; /* Alinear al inicio verticalmente */
+  }
+}
 .navbar-nav.navbar-center {
   position: absolute;
   left: 50%;
@@ -95,6 +117,14 @@
   top: 0px;
 
 }
+.container-card {
+  display: flex;
+  min-height: 190px;
+  background: #DBE0E6;
+  border-radius: 50px !important;
+  margin-left: auto;
+
+}
 
 .test-choice a {
   opacity: 0; 
@@ -104,7 +134,18 @@
   opacity: 1;
 }
 .centered {
-  display: flex; 
-  align-items: center; 
-  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.3rem;
+  font-weight: bolder;
+}
+
+.daterangepicker .input-group-prepend,
+.daterangepicker .input-group-append,
+.daterangepicker .calendar-table th,
+.daterangepicker .calendar-table td,
+.daterangepicker .ranges ul li {
+    font-size:medium;
 }

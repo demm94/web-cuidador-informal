@@ -1,15 +1,18 @@
-from django.shortcuts import render, redirect
-from .models import Topico, Subtopico, Tema, DetalleTema
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Pregunta, Topico, Subtopico, Tema, DetalleTema
 from patient.models import Cuidador, Test, RespuestaNPI, RespuestaZarit
 from patient.forms import TestNPIForm, TestZaritForm
+from content.forms import PreguntaForm, RespuestaForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from .models import Topico
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.core import serializers
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
+from django.contrib.sessions.backends.db import SessionStore
+import datetime
 
 # Decorators
 
@@ -30,10 +33,25 @@ def pagination(list,request):
         # Si la página está fuera del rango (por ejemplo, 9999), mostrar la última página de resultados
         content = paginator.page(paginator.num_pages)
     return content
+
+def filtro_preguntas(rango_fechas, estado_respuesta,preguntas):
+    if rango_fechas:
+            fecha_min, fecha_max = rango_fechas.split(" - ")
+            fecha_min = datetime.datetime.strptime(fecha_min, "%d/%m/%Y").date()
+            fecha_max = datetime.datetime.strptime(fecha_max, "%d/%m/%Y").date()
+            preguntas = preguntas.filter(fecha_creacion__range=[fecha_min, fecha_max])
+
+    if estado_respuesta == "respondida":
+            preguntas = preguntas.exclude(respuesta__isnull=True)
+    elif estado_respuesta == "no_respondida":
+            preguntas = preguntas.filter(respuesta__isnull=True)
+    
+    return preguntas
+
 @login_required
 def home(request):
     busqueda = request.GET.get("buscar")
-    cuidadores = Cuidador.objects.all()
+    cuidadores = Cuidador.objects.filter(medico__id = request.user.id)
     temas = None
     if busqueda:
         temas = Tema.objects.filter(
@@ -74,7 +92,6 @@ def top_controlador(request, id_topico):
     subtopicos_list = Subtopico.objects.filter(topico__id = id_topico)
     subtopicos = pagination(subtopicos_list,request)
     if subtopicos_list:
-        print("IF SUBTOPICOS")
         # return redirect('content/subtopicos/')
         # Muestra todos esos subtopicos para seleccionar
         return render(request, 'content/subtopicos.html', {'subtopicos': subtopicos, 'nombreAnterior': nombreTopico})
@@ -83,10 +100,8 @@ def top_controlador(request, id_topico):
         temas_list = Tema.objects.filter(topico__id = id_topico)
         temas =pagination(temas_list,request)
         if temas_list:
-            print("HOLAA")
             return render(request, 'content/temas.html', {'temas': temas, 'nombreAnterior': nombreTopico})
         else:
-            print("Detalles")
             detalles_list = DetalleTema.objects.filter(topico__id = id_topico)
             detalles = pagination(detalles_list,request)
         
@@ -123,7 +138,9 @@ def test_screen(request):
 
 @login_required
 @user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
-def test_cuidador(request, id_usuario):
+def test_cuidador(request):
+    
+    id_usuario = request.session.get('session_cuidador')
     cuidador = Cuidador.objects.get(user__id=id_usuario)
     zarit = RespuestaZarit.objects.filter(test__cuidador__id = id_usuario)
     npi = RespuestaNPI.objects.filter(test__cuidador__id = id_usuario)
@@ -137,9 +154,93 @@ def ver_npi(request, id_npi):
     return render(request, 'content/testNPI.html', {'form': form, 'form_instance': form_instance})
 
 @login_required
-@user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
 def ver_zarit(request, id_zarit):
     form_instance = RespuestaZarit.objects.get(id=id_zarit)
     form = TestZaritForm(instance=form_instance)
     return render(request, 'content/testZarit.html', {'form': form, 'form_instance': form_instance})
+@login_required
+@user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
+def agregar_cuidador(request):
+    if request.method=='POST':
+        id_cuidador = request.POST.get('id_cuidador')
+        if id_cuidador:
+            try:
+                cuidador = Cuidador.objects.get(id=id_cuidador)
+                cuidador.medico = request.user
+                cuidador.save()
+            except Cuidador.DoesNotExist:
+                print("Cuidador no existe")
+                
+    cuidadores_list = Cuidador.objects.filter(medico__isnull=True)
 
+    return render(request, 'content/agregarCuidador.html',{'cuidadores_list': cuidadores_list})
+@login_required
+@user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
+def eliminar_cuidador(request,id_cuidador):
+    cuidador = get_object_or_404(Cuidador, id=id_cuidador)
+    cuidador.medico = None  # Establece la relación con el médico como nula
+    cuidador.save()
+    return redirect(reverse_lazy('home'))
+@login_required
+@user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
+def perfil_cuidador(request, id_cuidador):
+
+    try:
+        cuidador = Cuidador.objects.get(user=id_cuidador)
+        request.session['session_cuidador'] = id_cuidador
+    except Cuidador.DoesNotExist:
+        cuidador = None
+
+
+    return render(request ,'content/perfilCuidador.html',{'cuidador':cuidador})
+
+
+@login_required
+def preguntas(request,pregunta_id = None):
+    if request.user.is_cuidador:
+        form = PreguntaForm(request.POST or None)
+        preguntas = Pregunta.objects.filter(user_creador = request.user).order_by('-fecha_creacion')
+        busqueda = request.GET.get("buscar")
+        
+        
+        if form.is_valid():
+            pregunta = form.save(commit=False)
+            pregunta.user_creador = request.user 
+            pregunta.save()
+            return redirect(reverse_lazy('preguntas'))
+       
+        preguntas = pagination(preguntas,request)
+
+        if busqueda:
+            preguntas = Pregunta.objects.filter(
+                Q(pregunta__icontains = busqueda)
+            ).distinct
+        return render(request, 'content/preguntas.html',{'form':form, 'preguntas':preguntas})
+    
+    elif request.user.is_medico:
+        if pregunta_id != None:
+            pregunta = Pregunta.objects.get(id=pregunta_id)
+        id_cuidador = request.session.get('session_cuidador')
+        cuidador = Cuidador.objects.get(user__id=id_cuidador)
+        preguntas = Pregunta.objects.filter(user_creador = id_cuidador ).order_by('-fecha_creacion')
+        form = RespuestaForm(request.POST or None)
+        busqueda = request.GET.get("buscar")        
+        
+        estado_respuesta = request.GET.get("estado_respuesta")
+        rango_fechas = request.GET.get("rango_fechas")
+        preguntas = filtro_preguntas(rango_fechas,estado_respuesta,preguntas)        
+        
+        if form.is_valid():
+            pregunta.respuesta = form.cleaned_data['respuesta']
+            pregunta.user_responde = request.user 
+            pregunta.save()
+            return redirect(reverse_lazy('preguntas'))
+            
+        preguntas = pagination(preguntas,request)
+        
+        if busqueda:
+            preguntas = Pregunta.objects.filter(
+                Q(pregunta__icontains = busqueda)
+            ).distinct
+        return render(request,'content/preguntas.html',{'form':form,'preguntas':preguntas, 'cuidador':cuidador})
+    

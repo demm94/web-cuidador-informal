@@ -12,7 +12,7 @@
                     <h5 class="card-title">{{tema.nombre}}</h5>
                     <!--<p class="card-text">{{seccion.descripcion}}</p>-->
                     {% if tema.url_infografia %}
-                        <a class="btn btn-outline-primary" href="{% url 'infografia_consejos' tema.id %}">Ver infografía</a> 
+                        <a class="btn btn-outline-primary" style="z-index: 2;position: relative;" href="{% url 'infografia_consejos' tema.id %}">Ver infografía</a> 
                     {% endif %}
                     <a href="{% url 'tema_controlador' tema.id %}" class="stretched-link"></a>
 

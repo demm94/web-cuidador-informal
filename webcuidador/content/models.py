@@ -83,4 +83,16 @@ class DetalleTema(models.Model):
     def __str__(self):
         return self.descripcion
 
+class Pregunta(models.Model):
+    user_creador = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='preguntas_creadas')
+    pregunta = models.TextField()
+    respuesta = models.TextField(blank=True, null= True)
+    fecha_creacion = models.DateField(auto_now_add=True,verbose_name='Fecha de creación')
+    user_responde = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='preguntas_respondidas',blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'Pregunta'
+        verbose_name_plural = 'Preguntas'
+
+    def __str__(self):
+        return self.pregunta

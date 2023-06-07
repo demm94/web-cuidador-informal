@@ -5,13 +5,15 @@ from django.conf import settings
 # Create your models here.
 
 estados = {("Soltero", "Soltero(a)"), ("Casado", "Casado(a)"), ("Viudo", "Viudo(a)")}
-
+sexo ={("Femenino"),("Masculino"),("None")}
 class Paciente(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nombres = models.CharField(max_length=50, verbose_name='Nombres')
     apellidos = models.CharField(max_length=50, verbose_name='Apellidos')
     edad = models.PositiveIntegerField(verbose_name='Edad')
-    estado_civil = models.CharField(max_length=10, default="Soltero", choices=estados, verbose_name='Estado Civil')
+    fecha_de_nacimiento = models.DateField(verbose_name="Fecha de nacimiento")
+    sexo = models.CharField(max_length=10,verbose_name="Sexo")
+    enfermedades = models.CharField(max_length=100,default="Ninguna",verbose_name="Enfermedades")
 
     class Meta:
         verbose_name = 'Paciente'
@@ -29,6 +31,22 @@ class Sintoma(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class Evento(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=None, on_delete=models.CASCADE, null=False, blank=False,related_name='eventos_creados')
+    fecha = models.DateField(verbose_name='Fecha')
+    f_baño = models.PositiveIntegerField(verbose_name='Frecuencia de baño',null=True, blank=True)
+    f_alimentacion = models.PositiveIntegerField(verbose_name='Frecuencia de alimentación',null=True, blank=True)
+    f_sueño = models.PositiveIntegerField(verbose_name='Horas de sueño',null=True, blank=True)
+    animo = models.PositiveIntegerField(verbose_name='Estado de ánimo',null=True, blank=True)
+    comentario = models.TextField(max_length=200,default="",verbose_name='Otro',null=True)
+
+    class meta:
+        verbose_name = 'Evento'
+        verbose_name_plural = 'Eventos'
+    
+    def __str__(self):
+        return self
 
 class Historial(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, null=False, blank=False)
@@ -50,6 +68,7 @@ class Cuidador(models.Model):
     tipo = models.CharField(max_length=10, verbose_name="Tipo de Cuidador")
     relacion_paciente = models.CharField(max_length=20, verbose_name="Relación con paciente")
     fecha_cuidado = models.DateField(verbose_name="Inicio de cuidados")
+    medico = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='cuidadores', verbose_name='Médico', null=True)
 
     class Meta:
         verbose_name = 'Cuidador'
