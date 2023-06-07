@@ -154,3 +154,9 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = config("EMAIL_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
+
+#SESSION Config
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_NAME = 'session_cuidador'  # Nombre de la cookie de sesión
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Configuración de expiración de sesión
+SESSION_COOKIE_AGE = 86400  # Tiempo de vida de la cookie de sesión en segundos

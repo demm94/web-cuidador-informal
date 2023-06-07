@@ -31,6 +31,53 @@ function validarFormulario() {
 
   return true;
 }
+$(function() {
+  var start = moment().subtract(29, 'days');
+  var end = moment();
+  
+  function cb(start, end) {
+      $('input[name="rango_fechas"]').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+  }
+
+  $('input[name="rango_fechas"]').daterangepicker({
+      locale: {
+          cancelLabel: 'Borrar',
+          applyLabel: 'Aplicar',
+          format: 'DD/MM/YYYY',
+          separator: ' - ',
+          daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+          monthNames: [
+              'Enero',
+              'Febrero',
+              'Marzo',
+              'Abril',
+              'Mayo',
+              'Junio',
+              'Julio',
+              'Agosto',
+              'Septiembre',
+              'Octubre',
+              'Noviembre',
+              'Diciembre'
+          ],
+          customRangeLabel: 'Rango personalizado'
+
+      },
+      startDate: start,
+      endDate: end,
+      ranges: {
+      'Hoy': [moment(), moment()],
+      'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+      'Últimos 7 Días': [moment().subtract(6, 'days'), moment()],
+      'Últimos 30 Días': [moment().subtract(29, 'days'), moment()],
+      'Mes Actual': [moment().startOf('month'), moment().endOf('month')],
+      'Mes Pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      }
+  }, cb);
+
+  cb(start, end);
+});
+
 
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip({

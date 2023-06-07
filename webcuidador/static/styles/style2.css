@@ -142,3 +142,10 @@
   font-weight: bolder;
 }
 
+.daterangepicker .input-group-prepend,
+.daterangepicker .input-group-append,
+.daterangepicker .calendar-table th,
+.daterangepicker .calendar-table td,
+.daterangepicker .ranges ul li {
+    font-size:medium;
+}

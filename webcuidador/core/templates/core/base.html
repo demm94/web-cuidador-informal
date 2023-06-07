@@ -28,6 +28,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <title>{% block title %}{% endblock%}</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/min/moment-with-locales.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 </head>
 
 <body> 
@@ -61,7 +66,7 @@
                       <a class="nav-link" href="{% url 'test_screen' %}" >Test</a>
                   </li>
                   <li class="nav-item {% if '/preguntas/' in request.path %}active{% endif %}">
-                      <a class="nav-link" >Preguntas</a>
+                      <a class="nav-link" href="{% url 'preguntas' %}">Preguntas</a>
                   </li>
                   {% elif request.user.is_staff or request.user.is_gestionador %}
                   <li class="nav-item {% if request.path == '/admin/' %}active{% endif %}">

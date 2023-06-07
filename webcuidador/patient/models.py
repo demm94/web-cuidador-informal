@@ -33,7 +33,7 @@ class Sintoma(models.Model):
         return self.nombre
 
 class Evento(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=None, on_delete=models.CASCADE, null=False, blank=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=None, on_delete=models.CASCADE, null=False, blank=False,related_name='eventos_creados')
     fecha = models.DateField(verbose_name='Fecha')
     f_baño = models.PositiveIntegerField(verbose_name='Frecuencia de baño',null=True, blank=True)
     f_alimentacion = models.PositiveIntegerField(verbose_name='Frecuencia de alimentación',null=True, blank=True)
