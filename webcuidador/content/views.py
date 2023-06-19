@@ -86,7 +86,7 @@ def chart_npi(npi):
         'Fecha': [r.test.fecha for r in npi],
     }
     for i in range(1, 13):
-        npi_data[f'r{i}b'] = [getattr(r, f'r{i}b') for r in npi]
+        npi_data[f'r{i}b'] = [getattr(r, f'r{i}b') if getattr(r, f'r{i}b') != 9 else -1 for r in npi]
     df = pd.DataFrame(npi_data)
     df.set_index('Fecha', inplace=True)
     columnas = [f'r{i}b' for i in range(1, 13)]
@@ -98,14 +98,15 @@ def chart_npi(npi):
             "Apatía o indiferencia", "Pérdida de la inhibición/Desinhibición",
             "Irritabilidad o labilidad", "Disturbio motor", "Conductas nocturnas",
             "Apetito y alimentación"],
+        color_continuous_scale='Greens',
     )
     fig2.update_layout(
-        title='Respuestas NPI - Heatmap',
+        title='Respuestas NPI',
         xaxis=dict(title='Fecha',tickformat='%d/%m/%Y'),
         coloraxis=dict(colorbar=dict(title='Severidad', thickness=25)),
         coloraxis_colorbar=dict(
-            tickvals=[0, 1, 2, 3, 9],
-            ticktext=['No cambia', 'Leve', 'Moderado', 'Severo', 'No sabe'],
+            tickvals=[-1, 0, 1, 2, 3],
+            ticktext=['No sabe', 'No cambia', 'Leve', 'Moderado', 'Severo'],
         )
     )
     return fig2
