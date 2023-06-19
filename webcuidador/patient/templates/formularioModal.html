@@ -1,97 +1,103 @@
-<div class="row">
-  <div class="col-md-12 mx-auto">
-      <form action="{% url 'registrar_evento' %}" method="post" onsubmit="return validarFormulario()">
-          {% csrf_token %}
-          <!-- Pregunta 1 -->
-          <div class="row" style="align-items: center; display: flex;">
-            <div class="col-6">
-              <p>¿La <b>frecuencia</b> con la que asiste al <b>baño</b> es afectada?</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mx-auto">
+        <form action="{% url 'registrar_evento' %}" method="post" onsubmit="return validarFormulario()">
+            {% csrf_token %}
+            <!-- Pregunta 1 -->
+            <div class="row" style="align-items: center; display: flex;">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <p>¿La <b>frecuencia</b> con la que asiste al <b>baño</b> es afectada?</p>
+              </div>
+              <div class="col-lg-2 col-md-6 col-sm-12">
+                <input type="radio" name="frecuencia_baño_afectada" value="si" onchange="toggleCampo('f_baño', this)"> Sí
+                <input type="radio" name="frecuencia_baño_afectada" value="no" onchange="toggleCampo('f_baño', this)"> No
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label for="{{ form.f_baño.id_for_label }}">Frecuencia:</label>
+                <input type="number" class="form-control mb-2" name="f_baño" placeholder="Inserte la frecuencia" readonly>
+              </div>
             </div>
-            <div class="col-2">
-              <input type="radio" name="frecuencia_baño_afectada" value="si" onchange="toggleCampo('f_baño', this)"> Sí
-              <input type="radio" name="frecuencia_baño_afectada" value="no" onchange="toggleCampo('f_baño', this)"> No
+            <hr>
+            <!-- Pregunta 2 -->
+            <div class="row" style="align-items: center; display: flex;">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <p>¿La <b>frecuencia</b> de <b>alimentación</b> es afectada?</p>
+              </div>
+              <div class="col-lg-2 col-md-6 col-sm-12">
+                <input type="radio" name="frecuencia_alimentacion_afectada" value="si" onchange="toggleCampo('f_alimentacion', this)"> Sí
+                <input type="radio" name="frecuencia_alimentacion_afectada" value="no" onchange="toggleCampo('f_alimentacion', this)"> No    
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label for="{{ form.f_alimentacion.id_for_label }}">Frecuencia:</label>
+                <input type="number" class="form-control mb-2" name="f_alimentacion" placeholder="Inserte la frecuencia" readonly>
+              </div>
+  
             </div>
-            <div class="col-4">
-              <label for="{{ form.f_baño.id_for_label }}">Frecuencia:</label>
-              <input type="number" class="form-control mb-2" name="f_baño" placeholder="Inserte la frecuencia" readonly>
-            </div>
-          </div>
-          <hr>
-          <!-- Pregunta 2 -->
-          <div class="row" style="align-items: center; display: flex;">
-            <div class="col-6">
-              <p>¿La <b>frecuencia</b> de <b>alimentación</b> es afectada?</p>
-            </div>
-            <div class="col-2">
-              <input type="radio" name="frecuencia_alimentacion_afectada" value="si" onchange="toggleCampo('f_alimentacion', this)"> Sí
-              <input type="radio" name="frecuencia_alimentacion_afectada" value="no" onchange="toggleCampo('f_alimentacion', this)"> No    
-            </div>
-            <div class="col-4">
-              <label for="{{ form.f_alimentacion.id_for_label }}">Frecuencia:</label>
-              <input type="number" class="form-control mb-2" name="f_alimentacion" placeholder="Inserte la frecuencia" readonly>
-            </div>
-
-          </div>
-          <hr>
-          
-          <!-- Pregunta 3 -->
-          <div class="row" style="align-items: center; display: flex;">
-            <div class="col-6">
-              <p>¿Las <b>horas</b> de <b>sueño</b> es afectada?</p>
-            </div>
-            <div class="col-2">
-              <input type="radio" name="horas_sueño_afectadas" value="si" onchange="toggleCampo('f_sueño', this)"> Sí
-              <input type="radio" name="horas_sueño_afectadas" value="no" onchange="toggleCampo('f_sueño', this)"> No
-            </div>
-            <div class="col-4">
-              <label for="{{ form.f_sueño.id_for_label }}">Horas:</label>
-              <input type="number" class="form-control mb-2" name="f_sueño" placeholder="Horas de sueño" readonly>
-            </div>
-
-          </div>
-          <hr>
-          <!-- Pregunta 4 -->
-          <div class="row" style="align-items: center; display: flex;">
-            <div class="col-6">
-              <p>¿El <b>estado</b> de <b>ánimo</b> es afectado?</p>
-            </div>
-            <div class="col-2">
-              <input type="radio" name="estado_animo_afectado" value="si" onchange="toggleCampo('animo', this)"> Sí
-              <input type="radio" name="estado_animo_afectado" value="no" onchange="toggleCampo('animo', this)"> No
-            </div>
-            <div class="col-4">
-              <label for="{{ form.animo.id_for_label }}">Ánimo (1-10):</label>
-              <input type="range" class="form-range mb-2" name="animo" min="1" max="10" value="5" disabled>
-            </div>
-
-          </div>
-          <hr>
-          <!-- Resto de los campos -->
-          <div class="input-group">
-            <div class="col-3">
-              <label  for="{{ form.fecha.id_for_label }}">Fecha:</label>
-              {{ form.fecha }}
-            </div>
-            <div class="col-9">
-              <label  for="{{ form.comentario.id_for_label }}">Otros:</label>
-              {{ form.comentario }}
-            </div>
-
-          </div>
-          <div class="form-group" title="{{ form.fecha.errors|striptags }}" data-toggle="tooltip_error" >
+            <hr>
             
+            <!-- Pregunta 3 -->
+            <div class="row" style="align-items: center; display: flex;">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <p>¿Las <b>horas</b> de <b>sueño</b> es afectada?</p>
+              </div>
+              <div class="col-lg-2 col-md-6 col-sm-12">
+                <input type="radio" name="horas_sueño_afectadas" value="si" onchange="toggleCampo('f_sueño', this)"> Sí
+                <input type="radio" name="horas_sueño_afectadas" value="no" onchange="toggleCampo('f_sueño', this)"> No
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label for="{{ form.f_sueño.id_for_label }}">Horas:</label>
+                <input type="number" class="form-control mb-2" name="f_sueño" placeholder="Horas de sueño" readonly>
+              </div>
+  
+            </div>
+            <hr>
+            <!-- Pregunta 4 -->
+            <div class="row" style="align-items: center; display: flex;">
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <p>¿El <b>estado</b> de <b>ánimo</b> es afectado?</p>
+              </div>
+              <div class="col-lg-2 col-md-6 col-sm-12">
+                <input type="radio" name="estado_animo_afectado" value="si" onchange="toggleCampo('animo', this)"> Sí
+                <input type="radio" name="estado_animo_afectado" value="no" onchange="toggleCampo('animo', this)"> No
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label for="{{ form.animo.id_for_label }}">Ánimo (1-10):</label>
+                <input type="range" class="form-range mb-2" name="animo" min="1" max="10" value="5" disabled>
+              </div>
+  
+            </div>
+            <hr>
+            <!-- Resto de los campos -->
+            <div class="input-group">
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <label  for="{{ form.fecha.id_for_label }}">Fecha:</label>
+                {{ form.fecha }}
+              </div>
+              <div class="col-lg-9 col-md-6 col-sm-12">
+                <label  for="{{ form.comentario.id_for_label }}">Otros:</label>
+                {{ form.comentario }}
+              </div>
+  
+            </div>
+            
+            <hr>
+            
+            <!--<input type="submit" value="Submit">-->
+            <div class="row justify-content-end mt-3">
+              <div class="col-auto">
+                  <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Cerrar</button>
+              </div>
+              <div class="col-auto">
+                  <button type="submit" class="btn btn-primary">Confirmar</button>
+              </div>
           </div>
-          <hr>
           
-          <!--<input type="submit" value="Submit">-->
-          <div class="container" style="display:flex; justify-content: flex-end;">
-            <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Cerrar</button>
-            <button type="submit" class="btn btn-primary ">Confirmar</button>
-          </div>
-        
-      </form>
+        </form>
+    </div>
   </div>
+
 </div>
+
 
 <script>
   function toggleCampo(fieldName, radio) {

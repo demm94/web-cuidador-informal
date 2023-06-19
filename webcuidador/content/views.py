@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Pregunta, Topico, Subtopico, Tema, DetalleTema
-from patient.models import Cuidador, Test, RespuestaNPI, RespuestaZarit
+from patient.models import Evento,Cuidador, Test, RespuestaNPI, RespuestaZarit
 from patient.forms import TestNPIForm, TestZaritForm
 from content.forms import PreguntaForm, RespuestaForm
 from django.db.models import Q
@@ -12,7 +12,16 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 from django.contrib.sessions.backends.db import SessionStore
+
+
 import datetime
+import pandas as pd
+from plotly.offline import plot
+import plotly.express as px
+import plotly.graph_objs as go
+import numpy as np
+
+
 
 # Decorators
 
@@ -47,6 +56,90 @@ def filtro_preguntas(rango_fechas, estado_respuesta,preguntas):
             preguntas = preguntas.filter(respuesta__isnull=True)
     
     return preguntas
+def chart_zarit(zarit):
+    zarit_data = [
+        {
+            'Fecha': z.test.fecha,
+            'Evaluacion': z.evaluacion,
+            'Resultado': z.resultado,
+        } for z in zarit
+    ]
+
+    df = pd.DataFrame(zarit_data)
+
+    fig = px.scatter(
+        df, x='Fecha',y='Resultado',color="Evaluacion", size = "Resultado",
+        color_discrete_map={
+            'Sobrecarga Intensa': 'red',
+            'Sobrecarga Ligera': 'orange',
+            'Ausencia de Sobrecarga': 'green',
+
+        },
+        category_orders={
+            'Evaluacion': ['Sobrecarga Intensa', 'Sobrecarga Ligera', 'Ausencia de Sobrecarga'],
+        }
+    )
+    fig.update_layout(title='Gráfico de Zarit', xaxis=dict(title='Fecha',tickformat='%d/%m/%Y'), yaxis=dict(title='Resultado'))
+    return fig           
+def chart_npi(npi):
+    npi_data = {
+        'Fecha': [r.test.fecha for r in npi],
+    }
+    for i in range(1, 13):
+        npi_data[f'r{i}b'] = [getattr(r, f'r{i}b') for r in npi]
+    df = pd.DataFrame(npi_data)
+    df.set_index('Fecha', inplace=True)
+    columnas = [f'r{i}b' for i in range(1, 13)]
+    fig2 = px.imshow(
+        df[columnas].T, 
+        labels=dict(y="Preguntas"),
+        y=["Delirios", "Alucinaciones", "Agitación o Agresividad",
+            "Depresión o disforia", "Ansiedad", "Euforia o exaltación",
+            "Apatía o indiferencia", "Pérdida de la inhibición/Desinhibición",
+            "Irritabilidad o labilidad", "Disturbio motor", "Conductas nocturnas",
+            "Apetito y alimentación"],
+    )
+    fig2.update_layout(
+        title='Respuestas NPI - Heatmap',
+        xaxis=dict(title='Fecha',tickformat='%d/%m/%Y'),
+        coloraxis=dict(colorbar=dict(title='Severidad', thickness=25)),
+        coloraxis_colorbar=dict(
+            tickvals=[0, 1, 2, 3, 9],
+            ticktext=['No cambia', 'Leve', 'Moderado', 'Severo', 'No sabe'],
+        )
+    )
+    return fig2
+def chart_eventos(eventos):
+    eventos_data = [
+        {
+            'Fecha': e.fecha,
+            'Frecuencia de baño': e.f_baño,
+            'Frecuencia de alimentación': e.f_alimentacion,
+            'Horas de sueño': e.f_sueño,
+            'Estado de ánimo': e.animo,
+            'Otros':e.comentario
+        } for e in eventos
+    ]
+    df = pd.DataFrame(eventos_data)
+
+    fig3 = px.line(df, x='Fecha', 
+                        y=[
+                            'Estado de ánimo',
+                            'Frecuencia de baño',
+                            'Frecuencia de alimentación',
+                            'Horas de sueño'
+                        ],
+                        markers=True,
+                        hover_data={'Otros':True},
+                        symbol="variable",
+                    )
+    fig3.update_layout(
+                title='Eventos',
+                xaxis=dict(title='Fecha',tickformat='%d/%m/%Y'),
+                yaxis=dict(title='Valores')
+            )
+    fig3.update_traces(marker=dict(size=10))
+    return fig3
 
 @login_required
 def home(request):
@@ -187,12 +280,16 @@ def perfil_cuidador(request, id_cuidador):
 
     try:
         cuidador = Cuidador.objects.get(user=id_cuidador)
-        request.session['session_cuidador'] = id_cuidador
+        eventos = Evento.objects.filter(user = id_cuidador).order_by('-fecha')
     except Cuidador.DoesNotExist:
         cuidador = None
 
+    if cuidador and cuidador.medico_id == request.user.id: 
+        request.session['session_cuidador'] = id_cuidador
+        return render(request ,'content/perfilCuidador.html',{'cuidador':cuidador,'eventos':eventos})
+    else: 
+        return redirect(reverse_lazy('home'))
 
-    return render(request ,'content/perfilCuidador.html',{'cuidador':cuidador})
 
 
 @login_required
@@ -202,7 +299,9 @@ def preguntas(request,pregunta_id = None):
         preguntas = Pregunta.objects.filter(user_creador = request.user).order_by('-fecha_creacion')
         busqueda = request.GET.get("buscar")
         
-        
+        estado_respuesta = request.GET.get("estado_respuesta")
+        rango_fechas = request.GET.get("rango_fechas")
+        preguntas = filtro_preguntas(rango_fechas,estado_respuesta,preguntas)
         if form.is_valid():
             pregunta = form.save(commit=False)
             pregunta.user_creador = request.user 
@@ -218,29 +317,76 @@ def preguntas(request,pregunta_id = None):
         return render(request, 'content/preguntas.html',{'form':form, 'preguntas':preguntas})
     
     elif request.user.is_medico:
-        if pregunta_id != None:
-            pregunta = Pregunta.objects.get(id=pregunta_id)
-        id_cuidador = request.session.get('session_cuidador')
-        cuidador = Cuidador.objects.get(user__id=id_cuidador)
-        preguntas = Pregunta.objects.filter(user_creador = id_cuidador ).order_by('-fecha_creacion')
-        form = RespuestaForm(request.POST or None)
-        busqueda = request.GET.get("buscar")        
-        
-        estado_respuesta = request.GET.get("estado_respuesta")
-        rango_fechas = request.GET.get("rango_fechas")
-        preguntas = filtro_preguntas(rango_fechas,estado_respuesta,preguntas)        
-        
-        if form.is_valid():
-            pregunta.respuesta = form.cleaned_data['respuesta']
-            pregunta.user_responde = request.user 
-            pregunta.save()
-            return redirect(reverse_lazy('preguntas'))
+        if request.session.get('session_cuidador'):
+            if pregunta_id != None:
+                pregunta = Pregunta.objects.get(id=pregunta_id)
+            id_cuidador = request.session.get('session_cuidador')
+            cuidador = Cuidador.objects.get(user__id=id_cuidador)
+            preguntas = Pregunta.objects.filter(user_creador = id_cuidador ).order_by('-fecha_creacion')
+            form = RespuestaForm(request.POST or None)
+            busqueda = request.GET.get("buscar")        
             
-        preguntas = pagination(preguntas,request)
-        
-        if busqueda:
-            preguntas = Pregunta.objects.filter(
-                Q(pregunta__icontains = busqueda)
-            ).distinct
-        return render(request,'content/preguntas.html',{'form':form,'preguntas':preguntas, 'cuidador':cuidador})
+            estado_respuesta = request.GET.get("estado_respuesta")
+            rango_fechas = request.GET.get("rango_fechas")
+            preguntas = filtro_preguntas(rango_fechas,estado_respuesta,preguntas)        
+            
+            if form.is_valid():
+                pregunta.respuesta = form.cleaned_data['respuesta']
+                pregunta.user_responde = request.user 
+                pregunta.save()
+                return redirect(reverse_lazy('preguntas'))
+                
+            preguntas = pagination(preguntas,request)
+            
+            if busqueda:
+                preguntas = Pregunta.objects.filter(
+                    Q(pregunta__icontains = busqueda)
+                ).distinct
+            return render(request,'content/preguntas.html',{'form':form,'preguntas':preguntas, 'cuidador':cuidador})
+        else: 
+            return redirect(reverse_lazy('home'))
+@login_required
+@user_passes_test(check_medico, settings.LOGIN_REDIRECT_URL) 
+def informe_grafico(request):
     
+    if request.session.get('session_cuidador'):
+        id_cuidador = request.session.get('session_cuidador')
+        cuidador = Cuidador.objects.get(user__id=id_cuidador) 
+        zarit = RespuestaZarit.objects.filter(test__cuidador__id = id_cuidador)
+        npi = RespuestaNPI.objects.filter(test__cuidador__id = id_cuidador)
+        eventos = Evento.objects.filter(user=id_cuidador).order_by('fecha')
+        context = {'cuidador':cuidador}
+        tipo_grafico = request.GET.get("tipo_grafico")
+
+        if tipo_grafico == "" or not tipo_grafico:
+            print(tipo_grafico)
+            if zarit:
+                fig = chart_zarit(zarit)
+                zarit_plot = plot(fig,output_type ="div")
+                context['zarit_plot'] = zarit_plot
+        
+
+            if npi:
+                fig2 = chart_npi(npi)
+                npi_plot = plot(fig2,output_type ="div")
+
+                context['npi_plot'] = npi_plot
+
+            if eventos:
+                fig3 = chart_eventos(eventos)
+                eventos_plot = plot(fig3,output_type ="div")
+                context['eventos_plot'] = eventos_plot
+        elif tipo_grafico == "ZARIT" and zarit:
+            fig = chart_zarit(zarit)
+            zarit_plot = plot(fig,output_type ="div")
+            context['zarit_plot'] = zarit_plot
+        elif tipo_grafico == "NPI" and npi:
+            fig2 = chart_npi(npi)
+            npi_plot = plot(fig2,output_type ="div")
+            context['npi_plot'] = npi_plot
+        elif tipo_grafico == "Eventos" and eventos:
+            fig3 = chart_eventos(eventos)
+            eventos_plot = plot(fig3,output_type ="div")
+            context['eventos_plot'] = eventos_plot
+
+        return render(request,'content/informeGrafico.html',context)

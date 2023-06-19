@@ -76,7 +76,7 @@
                       <a class="nav-link" href="{% url 'consejos' %}">Consejos</a>
                   </li>
                   {% elif request.user.is_medico %}
-                  
+                    
                   {% endif %}
               </ul>
               <ul class="navbar-nav ml-auto">
@@ -94,6 +94,8 @@
                     {% endif %}
                     {% if request.user.is_medico %}
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">                            
+                            <a class="dropdown-item" href="{% url 'change-password' %}">Cambiar contraseña</a>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item"  href="{% url 'logout' %}"><i class="fa fa-sign-out mr-1" aria-hidden="true"></i>Cerrar sesión</a>
                         </div>
                     {% endif %}
@@ -110,7 +112,7 @@
 
     <!--Contenido-->
     
-      <div class="container p-3 vh-100">
+      <div class="container-fluid p-3 vh-100">
         {% block content %} {% endblock %}
       </div>
    

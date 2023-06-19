@@ -5,7 +5,7 @@
 <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-lg-4 col-md-4 col-sm-12">
     
     {% if 'edit' in request.GET %}
       <div class="alert alert-success" role="alert">
@@ -40,7 +40,7 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-8 mt-2">
+  <div class="col-lg-8 col-md-8 col-sm-12 mt-2">
     <div class="mb-2" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;">
       <a class="btn btn-success" data-toggle="modal" data-target="#formularioModal"><i class="fa fa-plus" aria-hidden="true"></i>
           Añadir Evento
@@ -67,10 +67,10 @@
           <tr>
               <th >{{forloop.counter}}</th>
               <td>{{e.fecha}}</td>
-              <td>{% if e.f_baño %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle-fill text-danger"></i>{% endif %}</td>
-              <td>{% if e.f_alimentacion %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle-fill text-danger"></i>{% endif %}</td>
-              <td>{% if e.f_sueño %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle-fill text-danger"></i>{% endif %}</td>
-              <td>{% if e.animo %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle-fill text-danger"></i>{% endif %}</td>
+              <td>{% if e.f_baño %}<i class="bi bi-circle-fill text-success"></i>{% else %}<i class="bi bi-dash"></i>{% endif %}</td>
+              <td>{% if e.f_alimentacion %}<i class="bi bi-circle-fill text-success"></i>{% else %}<i class="bi bi-dash"></i>{% endif %}</td>
+              <td>{% if e.f_sueño %}<i class="bi bi-circle-fill text-success"></i>{% else %}<i class="bi bi-dash"></i>{% endif %}</td>
+              <td>{% if e.animo %}<i class="bi bi-circle-fill text-success"></i>{% else %}<i class="bi bi-dash"></i>{% endif %}</td>
               <td>
                 <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#verModal" data-evento-id="{{ e.id }}" data-fecha="{{ e.fecha }}" data-f-baño="{{ e.f_baño }}" data-f-alimentacion="{{ e.f_alimentacion }}" data-f-sueño="{{ e.f_sueño }}" data-animo="{{ e.animo }}" data-otro="{{e.comentario}}">
                   <i class="fa fa-eye mr-1" aria-hidden="true"></i>  
@@ -102,8 +102,10 @@
         </div>
       </div>
     </div>
+
+    <!--Modal para añadir evento-->
     <div id="formularioModal" class="modal" tabindex="-1" aria-labelledby="formularioModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Añadir Evento</h5>

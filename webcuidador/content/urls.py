@@ -19,4 +19,5 @@ urlpatterns = [
     path('tests/zarit/<int:id_zarit>/', views.ver_zarit, name='ver_zarit'),
     path('agregar_cuidador/', views.agregar_cuidador, name='agregar_cuidador'),
     path('perfil_cuidador/<int:id_cuidador>/', views.perfil_cuidador, name='perfil_cuidador'),
+    path('informe_grafico/', views.informe_grafico, name='informe_grafico')
 ]

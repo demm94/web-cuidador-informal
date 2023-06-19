@@ -2,44 +2,19 @@
 
 {% block title %}Detalles{% endblock %}
 {% block content %}
-    <!--<div class="mb-2">
-        <form class="form-inline my-2 my-lg-0"> 
-            <input class="form-control mr-sm-2" type="search" placeholder="Buscar..." aria-label="Search" name="buscar" value="{{request.GET.buscar}}">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-        </form>
-    </div>-->
-    <!--<form class="my-2 my-lg-0" method="GET">
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Buscar..." aria-label="Buscar" name="buscar" value="{{request.GET.buscar}}">
-            <div class="input-group-append">
-                <button class="btn btn-outline-success" type="submit">Buscar</button>
-            </div>
-        </div>
-    </form>-->
-    <style>
-        li {
-            /*text-align: justify;*/
-        }
-    </style>
-    <div class="row">
-        {% for detalle in detalles %}
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{nombreAnterior.nombre}}</h5>
-                        <div class="card-text">
-                            {{detalle.descripcion|safe}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-    <!--<div class="row">
-        <div class="mx-auto">
-            <iframe  src="https://view.genial.ly/5e28a1220bfc2279ea5f85b2" width="1200px" height="675px" allowfullscreen="allowfullscreen"></iframe>
-        </div>
-    </div>-->
-    {% include 'pagination.html' with items=detalles %}
+  
+    <h3 class="card-title" align="center">{{nombreAnterior.nombre}}</h3>
 
+    <div class="row" >
+        
+            <div class="col-sm-12">
+                        {% for detalle in detalles %}
+                            <div class="text-container">
+                                {{detalle|safe}}
+                            </div>
+                        {% endfor %}
+            </div>
+        
+    </div>
+    
 {% endblock  %}

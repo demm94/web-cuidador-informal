@@ -45,8 +45,7 @@ class Evento(models.Model):
         verbose_name = 'Evento'
         verbose_name_plural = 'Eventos'
     
-    def __str__(self):
-        return self
+    
 
 class Historial(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, null=False, blank=False)
@@ -86,7 +85,7 @@ class TipoTest(models.Model):
 
     def __str__(self):
         return self.nombre
-
+    
 class Test(models.Model):
     cuidador = models.ForeignKey(settings.AUTH_USER_MODEL, default=None, on_delete=models.CASCADE, null=False, blank=False)
     tipo_test = models.ForeignKey(TipoTest, on_delete=models.CASCADE, null=False, blank=False)
@@ -98,7 +97,7 @@ class Test(models.Model):
         ordering = ['-fecha']
     
     def __str__(self):
-        return "ID: " + str(self.id)
+        return "ID: " + str(self.id) + "," + str(self.cuidador.username)
 
 class RespuestaNPI(models.Model):
     test = models.OneToOneField(Test, on_delete=models.CASCADE, null=False, blank=False)

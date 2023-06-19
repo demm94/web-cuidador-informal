@@ -98,7 +98,9 @@
                     <form method="POST" action="{% url 'preguntas' %}">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary">Guardar pregunta</button>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Guardar pregunta</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -107,9 +109,14 @@
 {% endif %}
 
 {% if user.is_medico %}
+    
     <h2 id="titulo-medico" >Cuidador:  
-        <small class="text-muted"> {{cuidador.user.first_name}} {{cuidador.user.last_name}}</small>
+        <a href="{% url 'perfil_cuidador' cuidador.user.id %}" class="text"> {{cuidador.user.first_name}} {{cuidador.user.last_name}}</a>
     </h2>
+    <blockquote class="blockquote">
+        <p class="mb-0" style="font-size: 1rem;">A continuación puedes ver la lista de las <b>preguntas</b> realizadas por el cuidador.</p>
+        
+      </blockquote>
     <br>
     <form class=" my-lg-0" method="GET">
         <div class="input-group mb-3" >
@@ -119,19 +126,20 @@
             </div>
         </div>
     </form>
+    
     <form method="GET" action="{% url 'preguntas' %}">
         <!-- Otros campos de búsqueda existentes -->
         <div class="row d-flex justify-content-center align-items-center">
             
             <h3><i class="bi bi-filter-left mr-2"></i></h3>
            
-            <div class="col-sm-3">    
+            <div class="col-lg-3 col-md-6 col-sm-12">    
                 <div class="pull-right d-flex" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%;">
                     <i class="glyphicon glyphicon-calendar fa fa-calendar d-flex align-items-center"></i>&nbsp;
                     <input type="text" style="width:100%; border: #ccc;" id="rango_fechas" name="rango_fechas" >
                 </div>
             </div>
-            <div class="col-sm-4 ">
+            <div class="col-lg-3 col-md-6 col-sm-12">
                 <label for="estado_respuesta">Estado de respuesta:</label>
                 <select id="estado_respuesta" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; " name="estado_respuesta" onchange="this.form.submit()">
                     <option value="" {% if not request.GET.estado_respuesta %}selected{% endif %}>Todos</option>
@@ -144,7 +152,8 @@
         </div>
         
     </form>
-    {% for pregunta in preguntas %}
+    <div style=" border: 1px solid #000000; margin: 1%;">
+        {% for pregunta in preguntas %}
         <div style="padding: 1%;">
             <p><strong style="font-size: x-large;">{{ pregunta.pregunta }}</strong></p>
             {% if pregunta.respuesta %}
@@ -196,7 +205,9 @@
                         <form method="POST" action="{% url 'responder_pregunta'  pregunta.id  %}">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <button type="submit" class="btn btn-primary">Guardar respuesta</button>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">Guardar respuesta</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -204,6 +215,8 @@
         </div>
       
     {% endfor %}
+    </div>
+    
     {% include 'pagination.html' with items=preguntas %}
 
 {% endif%}

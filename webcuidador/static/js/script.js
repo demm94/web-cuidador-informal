@@ -91,6 +91,9 @@ $(document).ready(function(){
     trigger: 'manual',
 
   }).tooltip('show');
+  $('[data-toggle="tooltip_error"]').click(function() {
+    $(this).tooltip('hide');
+  });
   $('#tablaCuidadoresMedico').DataTable({
     "responsive": true,
     "bAutoWidth": false,

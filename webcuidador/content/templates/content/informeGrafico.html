@@ -1,0 +1,42 @@
+{% extends "core/base.html" %} 
+{% load static %}
+{% block title %}Informe{% endblock %} 
+{% block content %}
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+  
+  <h2 id="titulo-medico" >Cuidador:  
+    <a href="{% url 'perfil_cuidador' cuidador.user.id %}" class="text"> {{cuidador.user.first_name}} {{cuidador.user.last_name}}</a>
+  </h2>
+  <blockquote class="blockquote">
+    <p class="mb-0" style="font-size: 1rem;">A continuación puedes ver los <b>gráficos</b> historicos asociados a los <b>test</b> y <b>eventos</b>.</p>
+    
+  </blockquote>
+  <br>
+
+  <h1 align="center">Informe Gráfico</h1>
+  
+  <form method="GET" action="{% url 'informe_grafico' %}">
+    <!-- Otros campos de búsqueda existentes -->
+    <div class="row d-flex justify-content-center align-items-center">
+        
+        <h3><i class="bi bi-filter-left"></i></h3>
+       
+        
+        <div>
+            <label for="tipo_grafico">Gráfico:</label>
+            <select id="tipo_grafico" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; " name="tipo_grafico" onchange="this.form.submit()">
+                <option value="" {% if not request.GET.tipo_grafico %}selected{% endif %}>Todos</option>
+                <option value="ZARIT" {% if request.GET.tipo_grafico == 'ZARIT' %}selected{% endif %}>Zarit</option>
+                <option value="NPI" {% if request.GET.tipo_grafico == 'NPI' %}selected{% endif %}>NPI</option>
+                <option value="Eventos" {% if request.GET.tipo_grafico == 'Eventos' %}selected{% endif %}>Eventos</option>
+            </select>
+        </div>   
+    </div> 
+  </form>
+  <div id="zarit-plot">{{ zarit_plot|safe }}</div>
+
+  <div id="npi-plot">{{ npi_plot|safe }}</div>
+  <div id="npi-plot">{{ eventos_plot|safe }}</div>
+
+
+{% endblock %}

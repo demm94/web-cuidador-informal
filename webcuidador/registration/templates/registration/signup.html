@@ -14,34 +14,34 @@
 <main role="main">
   <div class="container">
     <div class="row mt-3">
-      <div class="col-md-9 mx-auto mb-5">
+      <div class="col-12 mx-auto mb-5">
         <form action="" method="post">
           {% csrf_token %}
           <h2 align="center" class="mb-4"><i class="fa fa-user-plus mr-2" aria-hidden="true"></i><br>Registro</h2>
           {{ form.non_field_errors }}
           <div class="form-container2">
 
-            <div class="form-group" title="{{ form.username.errors|striptags }}" data-toggle="tooltip_error" style="max-width: 50%;">
+            <div class="form-group col-lg-6 col-md-6 col-sm-12" title="{{ form.username.errors|striptags }}" data-toggle="tooltip_error" >
               
               <label style="color:white" for="{{ form.username.id_for_label }}">Nombre de usuario: <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="{{ form.username.help_text }}"></i> </label>
               {{ form.username }}
             </div>
 
             <div class="input-group ">
-              <div class="form-group mr-1">
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
                 {{ form.first_name.errors }}
                 <label style="color:white" for="{{ form.first_name.id_for_label }}">Nombre: </label>
                 {{ form.first_name }}
                 {{ form.first_name.help_text }}
               </div>
-              <div class="form-group mr-3">
+              <div class="form-group col-lg-4 col-md-6 col-sm-12">
                 {{ form.last_name.errors }}
                 <label style="color:white" for="{{ form.last_name.id_for_label }}">Apellido:</label>
                 {{ form.last_name }}
                 {{ form.last_name.help_text }}
               </div>
             
-                <div class="form-group" title="{{ form.is_medico.errors|striptags }}" data-toggle="tooltip_error">
+                <div class="form-group col-lg-4 col-md-6 col-sm-12" title="{{ form.is_medico.errors|striptags }}" data-toggle="tooltip_error">
                     <div class="form-group">
                       <label for="{{ form.is_medico.id_for_label }}" style="color:white">Médico:</label>
                       {{ form.is_medico }}
@@ -52,7 +52,7 @@
                     </div>
                 </div>     
             </div>
-          <div class="form-group" style="max-width: 50%;">
+          <div class="form-group col-lg-6 col-md-6 col-sm-12" >
             {{ form.email.errors }}
             <label style="color:white;" for="{{ form.email.id_for_label }}">Correo electrónico:</label>
             {{ form.email }}
@@ -61,13 +61,13 @@
 
           <div class="input-group mb-1">
 
-            <div class="form-group mr-1" title="{{ form.password1.errors|striptags }}" data-toggle="tooltip_error">
+            <div class="form-group col-lg-6 col-md-6 col-sm-12" title="{{ form.password1.errors|striptags }}" data-toggle="tooltip_error">
               
               <label style="color: white;" for="{{ form.password1.id_for_label }}">Contraseña: <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="right" title="{{ form.password1.help_text }}"></i></label>
               {{ form.password1 }}
               
             </div>
-            <div class="form-group" title="{{ form.password2.errors|striptags }}" data-toggle="tooltip_error">
+            <div class="form-group col-lg-6 col-md-6 col-sm-12" title="{{ form.password2.errors|striptags }}" data-toggle="tooltip_error">
               <label style="color: white;" for="{{ form.password2.id_for_label }}">Repite la contraseña:</label>
               <div class="input-group">
                 <input type="password" name="password2" autofocus maxlength="254" required

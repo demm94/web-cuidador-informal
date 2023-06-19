@@ -3,12 +3,11 @@
   border-radius: 50px;
   box-shadow: 0px 40px 20px -20px rgba(0, 0, 0, 0.4);
   margin: 0 auto;
-  max-width: 439px;
-  max-height: 500px;
+
   flex-direction: column;
   align-items: center;
-  padding: 49px 40px;
-  gap: 27px;
+  padding: 5% 8%;
+  gap: 0px;
 }
 .form-container2 {
   background-color: #5C5E61;
@@ -19,7 +18,7 @@
   max-height: max-content;
   flex-direction: column;
   align-items: center;
-  padding: 40px 60px;
+  padding: 5% 5%;
   gap: 27px;
 }
 .form-container form[type="group"] {
@@ -28,6 +27,11 @@
   align-items: flex-start;
   padding: 0px;
 }
+.form-group {
+  padding: 0px 10%;
+
+}
+
 .form-container input[type="text"]{
   
   background-color: white;
@@ -44,7 +48,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  padding: 6px 12px;
+  padding: 0px 12px;
   border-radius: 10px;
 }
 .custom-tooltip {
@@ -148,4 +152,28 @@
 .daterangepicker .calendar-table td,
 .daterangepicker .ranges ul li {
     font-size:medium;
+}
+
+a.text {
+  color: rgb(112, 112, 112); /* Cambia el color del enlace */
+  text-decoration: underline; /* Agrega subrayado al enlace */
+}
+
+a.text {
+  cursor: pointer; /* Cambia el cursor al pasar el cursor sobre el enlace */
+}
+.text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 20px;
+  gap: 10px;
+  background: #5C5E61;
+  border-radius: 50px;
+  color : white;
+  font-size: larger;
+}
+
+.navbar-nav .nav-link {
+  font-size: 18px; /* Tamaño de letra deseado */
 }

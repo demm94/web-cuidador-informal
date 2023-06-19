@@ -38,7 +38,7 @@ def info_test(request):
 def info_paciente(request):
     try:
         paciente = Paciente.objects.get(user = request.user)
-        eventos = Evento.objects.filter(user=request.user)
+        eventos = Evento.objects.filter(user=request.user).order_by('-fecha')
         form = RegistroEventoForm(request.POST)
 
     except Paciente.DoesNotExist:
@@ -153,14 +153,11 @@ def test_zarit(request):
     if cuidador:
         if request.method == 'POST':
             form = TestZaritForm(request.POST)
-            print(form.errors)
             if form.is_valid():
                 resultado = 0
                 evaluacion = ''
                 for key, value in form.cleaned_data.items():
-                    print(key, ' ', value)
                     resultado+=int(value)
-                print("Resultado: ", resultado)
                 if resultado <= 46:
                     evaluacion = "Ausencia de Sobrecarga"
                 elif 47 <= resultado <= 55:

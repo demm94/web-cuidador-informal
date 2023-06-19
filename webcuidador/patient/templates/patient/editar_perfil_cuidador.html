@@ -11,27 +11,27 @@
 
             <div class="form-container2">
 
-                <div class="input-group">
-                  <div class="form-group col-4" title="{{ form.edad.errors|striptags }}" data-toggle="tooltip_error" >
+                <div class="input-group mx-auto">
+                  <div class="form-group col-lg-4 col-md-6 col-sm-12" title="{{ form.edad.errors|striptags }}" data-toggle="tooltip_error" >
                     <label style="color:white" for="{{ form.edad.id_for_label }}">Edad:</label>
                     {{ form.edad }}
                   </div>
-                  <div class="form-group col-4" title="{{ form.estado_civil.errors|striptags }}" data-toggle="tooltip_error">
+                  <div class="form-group col-lg-4 col-md-6 col-sm-12" title="{{ form.estado_civil.errors|striptags }}" data-toggle="tooltip_error">
                     <label style="color:white" for="{{ form.estado_civil.id_for_label }}">Estado Civil:</label>
                     {{ form.estado_civil }}
                   </div>
-                  <div class="form-group col-4" title="{{ form.fecha_cuidado.errors|striptags }}" data-toggle="tooltip_error" >
+                  <div class="form-group col-lg-4 col-md-6 col-sm-12" title="{{ form.fecha_cuidado.errors|striptags }}" data-toggle="tooltip_error" >
                     <label style="color:white" for="{{ form.fecha_cuidado.id_for_label }}">Inicio de cuidados:</label>
                     {{ form.fecha_cuidado }}
                   </div>
                 </div>
     
                 <div class="input-group">
-                  <div class="form-group col-6" title="{{ form.tipo.errors|striptags }}" data-toggle="tooltip_error" style="max-width: 50%;" >
+                  <div class="form-group col-lg-6 col-md-6 col-sm-12" title="{{ form.tipo.errors|striptags }}" data-toggle="tooltip_error" style="max-width: 50%;" >
                     <label style="color:white" for="{{ form.tipo.id_for_label }}">Tipo de Cuidador:</label>
                     {{ form.tipo }}
                   </div>
-                  <div class="form-group col-6" title="{{ form.relacion_paciente.errors|striptags }}" data-toggle="tooltip_error" style="max-width: 50%;">
+                  <div class="form-group col-lg-6 col-md-6 col-sm-12" title="{{ form.relacion_paciente.errors|striptags }}" data-toggle="tooltip_error" style="max-width: 50%;">
                     <label style="color:white" for="{{ form.relacion_paciente.id_for_label }}">Relación con paciente:</label>
                     {{ form.relacion_paciente }}
                   </div>

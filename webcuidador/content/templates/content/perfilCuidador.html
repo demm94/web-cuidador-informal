@@ -2,8 +2,10 @@
 {% load static %}
 {% block title %}Perfil Cuidador{% endblock %}
 {% block content %}
+<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-lg-6 col-md-12 col-sm-12">
     
     <div class="profile-container mb-2">
       <div class="container text-center mx-auto"style="width: 40%;">
@@ -29,9 +31,9 @@
     </div>
 
   </div>
-    <div class="col-sm-3 align-items-center justify-content-center">
+    <div class="col-lg-3 col-md-12 col-sm-12 align-items-center justify-content-center">
       <div style="background-color:#467061;" class="card container-card mb-1">
-          <a href="#" class="stretched-link">
+          <a href="{% url 'informe_grafico' %}" class="stretched-link">
           </a>
           <div  class="centered" style="color: white;">INFORME GRÁFICO</div>
       </div>
@@ -39,23 +41,83 @@
         <a href="{% url 'test_cuidador' %}" class="stretched-link">
         </a>
         <div  class="centered" style="color: white;">TEST REALIZADOS</div>
+      </div>
     </div>
-    </div>
-    <div class="col-sm-3">
+    <div class="col-lg-3 col-md-12 col-sm-12">
   
-      <div style="background-color: #54AF8E;" class="card container-card ">
+      <div style="background-color: #54AF8E;" class="card container-card mb-1">
           <a href="{% url 'preguntas' %}" class="stretched-link">
           </a>
           <div class="centered "style="color: white;">PREGUNTAS</div>
       </div>
+      
     </div>
 
 
   
   
 </div>
-<div class="row">
+<hr>
+<div class="row mt-2">
+  <div class="col-lg-6 ml-auto mr-auto">
+    <h3 align="center">Eventos</h3>
+    <table id="tablaTest" class="table table-sm">
+      <thead>
+      <tr>
+          <th scope="col">#</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Baño</th>
+          <th scope="col">Alimentación</th>
+          <th scope="col">Sueño</th>
+          <th scope="col">Ánimo</th>
+          <th scope="col"></th>
+  
+          <!--<th scope="col"></th>-->
+      </tr>
+      </thead>
+      <tbody>
+          {% for e in eventos %}
+          <tr>
+              <th >{{forloop.counter}}</th>
+              <td>{{e.fecha}}</td>
+              <td>{% if e.f_baño %}<i class="bi bi-circle-fill text-success"></i>{% else %}<i class="bi bi-dash"></i>{% endif %}</td>
+              <td>{% if e.f_alimentacion %}<i class="bi bi-circle-fill text-success"></i>{% else %}<i class="bi bi-dash"></i>{% endif %}</td>
+              <td>{% if e.f_sueño %}<i class="bi bi-circle-fill text-success"></i>{% else %}<i class="bi bi-dash"></i>{% endif %}</td>
+              <td>{% if e.animo %}<i class="bi bi-circle-fill text-success"></i>{% else %}<i class="bi bi-dash"></i>{% endif %}</td>
+              <td>
+                <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#verModal" data-evento-id="{{ e.id }}" data-fecha="{{ e.fecha }}" data-f-baño="{{ e.f_baño }}" data-f-alimentacion="{{ e.f_alimentacion }}" data-f-sueño="{{ e.f_sueño }}" data-animo="{{ e.animo }}" data-otro="{{e.comentario}}">
+                  <i class="fa fa-eye mr-1" aria-hidden="true"></i>  
+                  Ver
+                </a>
+            </td>
+              <!--<td><a href="#" class="btn btn-outline-info btn-sm btn-block">Ver</a></td>-->
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    <div id="verModal" class="modal" tabindex="-1" aria-labelledby="formularioModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Detalles</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Fecha: <span id="modal-fecha"></span></p>
+            <p>Frecuencia de baño: <span id="modal-f-baño"></span></p>
+            <p>Frecuencia de alimentación: <span id="modal-f-alimentacion"></span></p>
+            <p>Horas de sueño: <span id="modal-f-sueño"></span></p>
+            <p>Estado de ánimo: <span id="modal-animo"></span></p>
+            <p>Otro: <span id="modal-otro"></span></p>
+          </div>        
+        </div>
+      </div>
+    </div>
 
+  </div>
+  
 
 </div>
 
